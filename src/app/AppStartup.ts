@@ -10,6 +10,11 @@ export default class AppStartup implements IStartup
         @inject(TYPES.container) private readonly container: Container
     ) {
 
+        
+    }
+
+    async registerServices(): Promise<void> {
+
     }
 
     async configureServices(): Promise<void> {

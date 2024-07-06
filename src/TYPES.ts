@@ -2,8 +2,7 @@
 export default {
     container: Symbol.for("CORE::Container"),
     Core: {
-        ICoreStartup: Symbol.for("CORE::IStartup_CORE"),
-        IAppStartup: Symbol.for("CORE::IStartup_APP"),
+        IStartup: Symbol.for("CORE::IStartup"),
         Application: Symbol.for("CORE::Application")
     },
     CLI: {

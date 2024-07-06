@@ -23,13 +23,13 @@ describe('ApplicationBuilder', () => {
 
     describe("setStartup", () => {
         it('should bind startup to the Core.IAppStartup symbol type', () => {
-            appBuilder.setStartUp(class implements IStartup { async configureServices(){}})
+            appBuilder.setStartUp(class implements IStartup { async configureServices(){} async registerServices() {}})
             
-            expect(container.isBound(TYPES.Core.IAppStartup)).toBe(true);
+            expect(container.isBound(TYPES.Core.IStartup)).toBe(true);
         });
 
         it('should display a warning message when setStartUp is called twice or more', () => {
-            class MockStartup implements IStartup { async configureServices(){}}
+            class MockStartup implements IStartup { async configureServices(){} async registerServices() {}}
 
             console.warn = jest.fn();
             appBuilder.setStartUp(MockStartup)
@@ -45,13 +45,14 @@ describe('ApplicationBuilder', () => {
         });
 
         it('should call configureServices on only ICoreStartup if IAppStartup is not bound bound', async () => {
-            @injectable() class CoreStartup implements IStartup { async configureServices(){}}
+            @injectable() 
+            class CoreStartup implements IStartup { async configureServices(){} async registerServices() {}}
 
             const coreStartup = new CoreStartup();
 
             const jestSpyCore = jest.spyOn(coreStartup, 'configureServices');
 
-            container.bind(TYPES.Core.ICoreStartup).toConstantValue(coreStartup);
+            container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
 
             await appBuilder.build();
 
@@ -59,16 +60,16 @@ describe('ApplicationBuilder', () => {
         });
 
         it('should call configureServices on both ICoreStartup and IAppStartup if they are bound', async () => {
-            @injectable() class CoreStartup implements IStartup { async configureServices(){}}
-            @injectable() class AppStartup implements IStartup { async configureServices(){}}
+            @injectable() class CoreStartup implements IStartup { async configureServices(){} async registerServices() {}}
+            @injectable() class AppStartup implements IStartup { async configureServices(){} async registerServices() {}}
             const coreStartup = new CoreStartup();
             const appStartup = new AppStartup();
 
             const jestSpyCore = jest.spyOn(coreStartup, 'configureServices');
             const jestSpyApp = jest.spyOn(appStartup, 'configureServices');
 
-            container.bind(TYPES.Core.ICoreStartup).toConstantValue(coreStartup);
-            container.bind(TYPES.Core.IAppStartup).toConstantValue(appStartup);
+            container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
+            container.bind(TYPES.Core.IStartup).toConstantValue(appStartup);
 
             await appBuilder.build();
 
@@ -77,9 +78,9 @@ describe('ApplicationBuilder', () => {
         });
 
          it('should resolve and return the Application instance', async () => {           
-            @injectable() class CoreStartup implements IStartup { async configureServices(){}}
+            @injectable() class CoreStartup implements IStartup { async configureServices(){} async registerServices() {}}
             const coreStartup = new CoreStartup();
-            container.bind(TYPES.Core.ICoreStartup).toConstantValue(coreStartup);
+            container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
             
             const application = await appBuilder.build();
 

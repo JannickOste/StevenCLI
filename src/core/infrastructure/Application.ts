@@ -1,5 +1,6 @@
 import { injectable } from "inversify"
 import ApplicationError from "../domain/errors/ApplicationError";
+import "reflect-metadata"
 
 @injectable()
 export default class Application 

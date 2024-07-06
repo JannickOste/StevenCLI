@@ -3,6 +3,7 @@ import TYPES from "../../../TYPES";
 import "reflect-metadata"
 import IStartup from "../../domain/IStartup";
 import CoreStartup from "../CoreStartup";
+import CLIStartup from "../../../cli/CLIStartup";
 
 @injectable()
 class DependencyContainer extends Container
@@ -18,7 +19,8 @@ class DependencyContainer extends Container
     {
         this.bind<Container>(TYPES.container).toConstantValue(this)
 
-        this.bind<IStartup>(TYPES.Core.ICoreStartup).to(CoreStartup)
+        this.bind<IStartup>(TYPES.Core.IStartup).to(CoreStartup)
+        this.bind<IStartup>(TYPES.Core.IStartup).to(CLIStartup)
     }
 }
 

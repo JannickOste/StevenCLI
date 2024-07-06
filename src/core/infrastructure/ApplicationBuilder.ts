@@ -14,12 +14,9 @@ import container from "./di/DependencyContainer";
         if(this.appStartupConstructor !== undefined)
         {
             console.warn("Warning: Overiding previous application startup file.")
-            container.unbind(TYPES.Core.IAppStartup);
         }
 
         this.appStartupConstructor = startup;
-
-        container.bind<IStartup>(TYPES.Core.IAppStartup).to(startup)
 
         return this;
     }
@@ -28,20 +25,20 @@ import container from "./di/DependencyContainer";
 
     ): Promise<Application>
     {
-        for(const startupType of [
-            TYPES.Core.ICoreStartup, TYPES.Core.IAppStartup
-        ]) {
-            if(!container.isBound(startupType))
-            {
-                switch(startupType)
-                {
-                    case TYPES.Core.ICoreStartup: throw new Error("No core application startup bound");
-                    default: continue;
-                }
-            }
+        if(this.appStartupConstructor)
+        {
+            container.bind<IStartup>(TYPES.Core.IStartup).to(this.appStartupConstructor)
+        }
 
-            const startupInstance = container.get<IStartup>(startupType);
-            await startupInstance.configureServices();
+        const startupDependencies: IStartup[] = container.getAll<IStartup>(TYPES.Core.IStartup);
+        for(const dependency of startupDependencies)
+        {
+            await dependency.registerServices()
+        }
+
+        for(const dependency of startupDependencies)
+        {
+            await dependency.configureServices()
         }
 
         return container.resolve<Application>(Application)
