@@ -34,8 +34,8 @@ console.log("Dumping package information")
 fs.writeFileSync(
     path.join(rootDir, 'ENV_CONFIG.ts'),
     `//DO NOT WRITE ANYTHING IN THIS FILE, THIS FILE WILL BE OVERIDDEN ON PUBLISH
-export interface IENV_CONFIG { name: string, version: string, description:string, author: string, projectRoot:string}
-const ENV_CONFIG: IENV_CONFIG = {name: "${name}", version: "${version}", description: "${description}", author: "${author}", projectRoot: "${escapedProjectRoot}"}
+export interface IENV_CONFIG { name: string, version: string, description:string, author: string, projectRoot:string, sourceDir: string, buildDir: string}
+const ENV_CONFIG: IENV_CONFIG = {name: "${name}", version: "${version}", description: "${description}", author: "${author}", projectRoot: "${escapedProjectRoot}", sourceDir: "${rootDir}", buildDir: "${outDir}"}
 export default ENV_CONFIG; 
 `
 )
