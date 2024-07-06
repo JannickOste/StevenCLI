@@ -1,6 +1,8 @@
 import { Container, injectable } from "inversify";
 import TYPES from "../../../TYPES";
 import "reflect-metadata"
+import IStartup from "../../domain/IStartup";
+import CoreStartup from "../CoreStartup";
 
 @injectable()
 class DependencyContainer extends Container
@@ -15,6 +17,8 @@ class DependencyContainer extends Container
     registerServices()
     {
         this.bind<Container>(TYPES.container).toConstantValue(this)
+
+        this.bind<IStartup>(TYPES.Core.ICoreStartup).to(CoreStartup)
     }
 }
 

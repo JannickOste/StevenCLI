@@ -1,18 +1,12 @@
 import TYPES from "../../TYPES";
 import IStartup from "../domain/IStartup";
 import Application from "./Application";
-import CoreStartup from "./CoreStartup";
 import container from "./di/DependencyContainer";
  
  export default class ApplicationBuilder 
  { 
     
     private appStartupConstructor: (new() => IStartup) | undefined;
-
-    constructor()
-    {
-        container.bind<IStartup>(TYPES.Core.ICoreStartup).to(CoreStartup)
-    }
 
     setStartUp( 
         startup: new(...args: any[]) => IStartup
