@@ -2,7 +2,7 @@ import AAplicationEvent from "../../domain/events/AAplicationEvent";
 import delaySync from "../helpers/delaySync";
 
 
-export default class EventBus {
+export default class EventBus{
     public readonly events: Record<string, AAplicationEvent[]> = {};
 
     constructor(
@@ -40,7 +40,7 @@ export default class EventBus {
         ... payload: unknown[]
     ): void {
 
-        const listeners = this.events[eventName];
+        const listeners = this.events[eventName] ?? [];
         if (listeners.length) {
             const listenerThreads = listeners.map(listeners => new Promise<void>((resolve, reject) => {
                 listeners.invoke(...payload)
