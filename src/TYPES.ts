@@ -8,6 +8,10 @@ export default {
     CLI: {
         Parsers: {
             ICommandSearchParser: Symbol.for("CLI::PARSERS:ICommandSearchParser")
-        }
+        },
+        Loaders: {
+            ICommandLoader:  Symbol.for("CLI::LOADERS:ICommandLoader")
+        },
+        ICommand: Symbol.for("CLI::ICommand")
     }
 }
