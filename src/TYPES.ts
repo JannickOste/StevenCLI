@@ -12,6 +12,9 @@ export default {
         Loaders: {
             ICommandLoader:  Symbol.for("CLI::LOADERS:ICommandLoader")
         },
+        Constants: {
+            COMMAND_ROOT: Symbol.for("CLI::CONSTANT->Command_root_directory")
+        },
         ICommand: Symbol.for("CLI::ICommand")
     }
 }

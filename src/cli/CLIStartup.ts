@@ -6,6 +6,8 @@ import ICommandSearchParser from "./domain/parsers/ICommandSearchParser";
 import CommandSearchParser from "./infrastructure/parsers/CommandSearchParser";
 import InMemoryCommandLoader from "./infrastructure/loaders/InMemoryCommandLoader";
 import { ICommandLoader } from "./domain/loaders/ICommandLoader";
+import ENV_CONFIG from "../ENV_CONFIG";
+import path from "path";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -19,6 +21,15 @@ export default class CLIStartup implements IStartup
     async registerServices(): Promise<void> {
         this.container.bind<ICommandSearchParser>(TYPES.CLI.Parsers.ICommandSearchParser).to(CommandSearchParser)
         this.container.bind<ICommandLoader>(TYPES.CLI.Loaders.ICommandLoader).to(InMemoryCommandLoader);
+        
+        this.container.bind<string>(TYPES.CLI.Constants.COMMAND_ROOT).toConstantValue(
+            path.join(
+                ENV_CONFIG.projectRoot,
+                __filename.endsWith(".ts") ? ENV_CONFIG.sourceDir : ENV_CONFIG.buildDir,
+                "app",
+                "commands"
+            )
+        )
 
     }
 

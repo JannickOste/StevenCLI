@@ -1,7 +1,6 @@
 import { Container, inject, injectable } from "inversify";
 import TYPES from "../../../TYPES";
 import { CommandMetadataKey } from "../../domain/command/decorators/Command";
-import ENV_CONFIG from "../../../ENV_CONFIG";
 import { globSync } from "glob";
 import { ICommandLoader } from "../../domain/loaders/ICommandLoader";
 
@@ -9,7 +8,8 @@ import { ICommandLoader } from "../../domain/loaders/ICommandLoader";
 export default class InMemoryCommandLoader implements ICommandLoader
 { 
     constructor(
-        @inject(TYPES.container) private readonly container: Container
+        @inject(TYPES.container) private readonly container: Container,
+        @inject(TYPES.CLI.Constants.COMMAND_ROOT) private readonly COMMAND_ROOT: string
     ) {
         
     }
@@ -19,6 +19,7 @@ export default class InMemoryCommandLoader implements ICommandLoader
         namePrefix: string = ""
     )
     {
+        console.dir(typeof commandSource)
         if(!commandSource || typeof commandSource !== "function")
             return;
 
@@ -46,11 +47,10 @@ export default class InMemoryCommandLoader implements ICommandLoader
     public async loadAll(): Promise<void>
     {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const commandPaths: string[] = (globSync(`./${(__filename.endsWith(".ts") ? ENV_CONFIG.sourceDir : ENV_CONFIG.buildDir)}/app/commands/*/index.{ts,js}`, {
+        const commandPaths: string[] = (globSync(`*/index.{ts,js}`, {
             absolute: true,
-            cwd: ENV_CONFIG.projectRoot
+            cwd: this.COMMAND_ROOT
         }))! as string[];
-
 
         for(const filepath of commandPaths) {
             try 
