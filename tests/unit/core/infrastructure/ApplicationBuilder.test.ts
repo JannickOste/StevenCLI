@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import { Container, injectable } from 'inversify';
-import IStartup from '../../src/core/domain/IStartup';
-import ApplicationBuilder from '../../src/core/infrastructure/ApplicationBuilder';
-import TYPES from '../../src/TYPES';
-import container from '../../src/core/infrastructure/di/DependencyContainer';
-import Application from '../../src/core/infrastructure/Application';
+import IStartup from '../../../../src/core/domain/IStartup';
+import ApplicationBuilder from '../../../../src/core/infrastructure/ApplicationBuilder';
+import TYPES from '../../../../src/TYPES';
+import Application from '../../../../src/core/infrastructure/Application';
 
-jest.mock('../../src/core/infrastructure/di/DependencyContainer', () => new Container());
+import container from '../../../../src/core/infrastructure/di/DependencyContainer';
+jest.mock('../../../../src/core/infrastructure/di/DependencyContainer', () => new Container());
 
 describe('ApplicationBuilder', () => {
     let appBuilder: ApplicationBuilder; 
