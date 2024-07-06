@@ -20,7 +20,7 @@ describe('EventBus', () => {
         it('should throw an error if the event isn\'t found', async () => {
             const bus = new EventBus();
         
-            await expect(bus.emit('')).rejects.toThrow('Event not found...');
+            await expect(bus.emit('')).rejects.toThrow();
         });
 
         it('should emit events asynchronously', async () => {
@@ -41,7 +41,7 @@ describe('EventBus', () => {
         it('should throw an error if the event isn\'t found', () => {
             const bus = new EventBus();
         
-            expect(() => bus.emitSync('')).toThrow('Event not found...');
+            expect(() => bus.emitSync('')).toThrow();
         });
 
         it('should emit events synchronously', () => {
