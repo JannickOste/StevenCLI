@@ -19,7 +19,6 @@ export default class InMemoryCommandLoader implements ICommandLoader
         namePrefix: string = ""
     )
     {
-        console.dir(typeof commandSource)
         if(!commandSource || typeof commandSource !== "function")
             return;
 

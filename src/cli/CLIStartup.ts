@@ -8,6 +8,8 @@ import InMemoryCommandLoader from "./infrastructure/loaders/InMemoryCommandLoade
 import { ICommandLoader } from "./domain/loaders/ICommandLoader";
 import ENV_CONFIG from "../ENV_CONFIG";
 import path from "path";
+import ICommandRepository from "./domain/repositories/ICommandRepository";
+import InMemoryCommandRepository from "./infrastructure/repositories/InMemmoryCommandRepository";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -21,7 +23,7 @@ export default class CLIStartup implements IStartup
     async registerServices(): Promise<void> {
         this.container.bind<ICommandSearchParser>(TYPES.CLI.Parsers.ICommandSearchParser).to(CommandSearchParser)
         this.container.bind<ICommandLoader>(TYPES.CLI.Loaders.ICommandLoader).to(InMemoryCommandLoader);
-        
+        this.container.bind<ICommandRepository>(TYPES.CLI.Repositories.ICommandRepository).to(InMemoryCommandRepository);
         this.container.bind<string>(TYPES.CLI.Constants.COMMAND_ROOT).toConstantValue(
             path.join(
                 ENV_CONFIG.projectRoot,
@@ -39,5 +41,6 @@ export default class CLIStartup implements IStartup
         {
             await commandLoader.loadAll()
         }
+
     }
 }

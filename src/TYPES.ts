@@ -15,6 +15,9 @@ export default {
         Constants: {
             COMMAND_ROOT: Symbol.for("CLI::CONSTANT->Command_root_directory")
         },
+        Repositories: { 
+            ICommandRepository: Symbol.for("CLI::Repositories::CommandRepository")
+        },
         ICommand: Symbol.for("CLI::ICommand")
     }
 }
