@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/JannickOste/StevenCLI/compare/v0.1.0...v0.2.0) (2024-07-07)
+
+
+### Features
+
+* **CommandService:** command service added ([6111254](https://github.com/JannickOste/StevenCLI/commit/6111254456e3b0fe058834fca2e6321e5f50774b))
+
 # [0.1.0](https://github.com/JannickOste/StevenCLI/compare/v0.0.0...v0.1.0) (2024-07-07)
 
 
