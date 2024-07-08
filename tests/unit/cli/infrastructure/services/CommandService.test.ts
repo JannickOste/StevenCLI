@@ -1,7 +1,8 @@
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
 import ICommandRepository from "../../../../../src/cli/domain/repositories/ICommandRepository";
 import CommandService from "../../../../../src/cli/infrastructure/services/CommandService"
-import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command"; "../../../../../src/cli/domain/models/commands/decorators"
+import CommandDecorator, { CommandMetadataKey } from "../../../../../src/cli/domain/models/commands/decorators/Command"; 
+import ICommandInfo from "../../../../../src/cli/domain/models/commands/ICommandInfo";
 
 describe("CommandService", () => {
     const describeFunction = (key: keyof CommandService, descriptionCallback: jest.EmptyFunction) => describe(key, descriptionCallback);
@@ -95,4 +96,71 @@ describe("CommandService", () => {
             expect(result).toStrictEqual(new CommandC())
         })
     })    
+
+    describeFunction("getCommandInfo", () => {
+        it('should return ICommandInfo when valid metadata is present', () => {
+            // Define a mock command class with valid metadata
+            @CommandDecorator({ name: 'TestCommand' })
+            class TestCommand implements ICommand {
+              invoke() {}
+            }
+            const repository: ICommandRepository = { async getAll() { return [new TestCommand()]} }
+              const service = new CommandService(repository, {collectionToNamedCollection: jest.fn()})
+      
+            // Define expected ICommandInfo
+            const expected: ICommandInfo = { name: 'TestCommand' };
+      
+      
+            // Call the method to be tested
+            const result = service.getCommandInfo(TestCommand);
+      
+            // Assertions
+            expect(result).toEqual(expected);
+        });
+
+        
+    it('should return undefined if metadata is not an object', () => {
+        class InvalidMetadataCommand implements ICommand { invoke() {} }
+        Reflect.defineMetadata(CommandMetadataKey, "InvalidString", InvalidMetadataCommand);
+  
+        const repository: ICommandRepository = { async getAll() { return [new InvalidMetadataCommand()] } };
+  
+        const service = new CommandService(repository, {
+          collectionToNamedCollection: jest.fn()
+        });
+  
+        const result = service.getCommandInfo(InvalidMetadataCommand);
+  
+        expect(result).toBeUndefined();
+      });
+  
+      it('should return undefined if metadata is missing the name property', () => {
+        class IncompleteMetadataCommand implements ICommand {invoke() {}}
+        Reflect.defineMetadata(CommandMetadataKey, {}, IncompleteMetadataCommand);
+
+        const repository: ICommandRepository = { async getAll() { return [new IncompleteMetadataCommand()] } };
+        const service = new CommandService(repository, {
+          collectionToNamedCollection: jest.fn()
+        });
+  
+        const result = service.getCommandInfo(IncompleteMetadataCommand);
+  
+        expect(result).toBeUndefined();
+      });
+  
+      it('should return undefined if metadata is not defined', () => {
+        @CommandDecorator({ name: 'NoMetadata' }) 
+        class NoMetadataCommand implements ICommand { invoke() {} }
+        Reflect.deleteMetadata(CommandMetadataKey, NoMetadataCommand);
+
+        const repository: ICommandRepository = { async getAll() { return [new NoMetadataCommand()] } };
+        const service = new CommandService(repository, {
+          collectionToNamedCollection: jest.fn()
+        });
+  
+        const result = service.getCommandInfo(NoMetadataCommand);
+  
+        expect(result).toBeUndefined();
+      });
+    })
 })
