@@ -6,6 +6,7 @@ import TYPES from "../../../TYPES";
 import ICommandService from "../../domain/services/ICommandService";
 import CommandCollection from "../../domain/models/collections/CommandCollection";
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
+import "reflect-metadata"
 
 @injectable()
 export default class CommandMapper implements ICommandMapper 
