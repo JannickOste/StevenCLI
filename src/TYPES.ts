@@ -9,14 +9,20 @@ export default {
         Parsers: {
             ICommandSearchParser: Symbol.for("CLI::PARSERS:ICommandSearchParser")
         },
+        mappers: {
+            ICommandMapper: Symbol.for("CLI::Mappers::ICommandMapper")
+        },
         Loaders: {
             ICommandLoader:  Symbol.for("CLI::LOADERS:ICommandLoader")
         },
-        Constants: {
-            COMMAND_ROOT: Symbol.for("CLI::CONSTANT->Command_root_directory")
-        },
         Repositories: { 
             ICommandRepository: Symbol.for("CLI::Repositories::CommandRepository")
+        },
+        Services: {
+            ICommandService: Symbol.for("CLI::Services::ICommandService")
+        },
+        Constants: {
+            COMMAND_ROOT: Symbol.for("CLI::CONSTANT->Command_root_directory")
         },
         ICommand: Symbol.for("CLI::ICommand")
     }

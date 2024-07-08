@@ -10,6 +10,8 @@ import ENV_CONFIG from "../ENV_CONFIG";
 import path from "path";
 import ICommandRepository from "./domain/repositories/ICommandRepository";
 import InMemoryCommandRepository from "./infrastructure/repositories/InMemmoryCommandRepository";
+import ICommandService from "./domain/services/ICommandService";
+import CommandService from "./infrastructure/services/CommandService";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -33,6 +35,7 @@ export default class CLIStartup implements IStartup
             )
         )
 
+        this.container.bind<ICommandService>(TYPES.CLI.Services.ICommandService).to(CommandService)
     }
 
     async configureServices(): Promise<void> {
