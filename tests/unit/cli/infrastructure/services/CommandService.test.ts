@@ -99,7 +99,6 @@ describe("CommandService", () => {
 
     describeFunction("getCommandInfo", () => {
         it('should return ICommandInfo when valid metadata is present', () => {
-            // Define a mock command class with valid metadata
             @CommandDecorator({ name: 'TestCommand' })
             class TestCommand implements ICommand {
               invoke() {}
@@ -107,14 +106,11 @@ describe("CommandService", () => {
             const repository: ICommandRepository = { async getAll() { return [new TestCommand()]} }
               const service = new CommandService(repository, {collectionToNamedCollection: jest.fn()})
       
-            // Define expected ICommandInfo
             const expected: ICommandInfo = { name: 'TestCommand' };
       
       
-            // Call the method to be tested
             const result = service.getCommandInfo(TestCommand);
       
-            // Assertions
             expect(result).toEqual(expected);
         });
 
