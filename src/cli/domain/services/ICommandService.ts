@@ -1,9 +1,11 @@
+import CommandCollection from "../models/collections/CommandCollection";
 import ICommand from "../models/commands/ICommand";
+import ICommandConstructor from "../models/commands/ICommandConstructor";
 import ICommandInfo from "../models/commands/ICommandInfo";
 
 export default interface ICommandService {
-    getCommandInfo(command: new() => ICommand): ICommandInfo | undefined;
-    getAll(): Promise<Array<ICommand>>;
+    getCommandInfo(command: ICommandConstructor): ICommandInfo | undefined;
+    getAll(): Promise<CommandCollection>;
     getCommandByName(name: string): Promise<ICommand | undefined>;
 
 }
