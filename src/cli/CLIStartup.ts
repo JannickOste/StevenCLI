@@ -9,7 +9,7 @@ import { ICommandLoader } from "./domain/loaders/ICommandLoader";
 import ENV_CONFIG from "../ENV_CONFIG";
 import path from "path";
 import ICommandRepository from "./domain/repositories/ICommandRepository";
-import InMemoryCommandRepository from "./infrastructure/repositories/InMemmoryCommandRepository";
+import InMemoryCommandRepository from "./infrastructure/repositories/InMemoryCommandRepository";
 import ICommandService from "./domain/services/ICommandService";
 import CommandService from "./infrastructure/services/CommandService";
 

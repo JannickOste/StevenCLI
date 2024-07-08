@@ -1,6 +1,6 @@
 import { Container } from "inversify"
 import ICommandRepository from "../../../../../src/cli/domain/repositories/ICommandRepository"
-import InMemoryCommandRepository from "../../../../../src/cli/infrastructure/repositories/InMemmoryCommandRepository"
+import InMemoryCommandRepository from "../../../../../src/cli/infrastructure/repositories/InMemoryCommandRepository"
 import TYPES from "../../../../../src/TYPES"
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand"
 import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command"; "../../../../../src/cli/domain/models/commands/decorators"
