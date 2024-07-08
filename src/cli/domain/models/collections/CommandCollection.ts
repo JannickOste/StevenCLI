@@ -1,4 +1,4 @@
-import ICommand from "../command/ICommand";
+import ICommand from "../commands/ICommand";
 
 type CommandCollection = Array<ICommand>;
 

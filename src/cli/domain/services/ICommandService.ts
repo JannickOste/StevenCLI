@@ -1,5 +1,5 @@
-import ICommand from "../command/ICommand";
-import ICommandInfo from "../command/ICommandInfo";
+import ICommand from "../models/commands/ICommand";
+import ICommandInfo from "../models/commands/ICommandInfo";
 
 export default interface ICommandService {
     getCommandInfo(command: new() => ICommand): ICommandInfo | undefined;

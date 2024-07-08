@@ -1,9 +1,9 @@
 import { Container } from "inversify"
-import CommandDecorator from "../../../../../src/cli/domain/command/decorators/Command"
-import ICommand from "../../../../../src/cli/domain/command/ICommand"
 import ICommandRepository from "../../../../../src/cli/domain/repositories/ICommandRepository"
 import InMemoryCommandRepository from "../../../../../src/cli/infrastructure/repositories/InMemmoryCommandRepository"
 import TYPES from "../../../../../src/TYPES"
+import ICommand from "../../../../../src/cli/domain/models/commands/ICommand"
+import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command"; "../../../../../src/cli/domain/models/commands/decorators"
 
 describe("InMemoryCommandRepository", () => {
     let container = new Container()
@@ -31,3 +31,4 @@ describe("InMemoryCommandRepository", () => {
         })
     })
 })
+

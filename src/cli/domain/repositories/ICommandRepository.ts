@@ -1,4 +1,4 @@
-import ICommand from "../command/ICommand";
+import ICommand from "../models/commands/ICommand";
 
 export default interface ICommandRepository 
 { 

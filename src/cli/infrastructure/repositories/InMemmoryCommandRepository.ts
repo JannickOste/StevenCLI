@@ -1,5 +1,5 @@
 import { Container, inject, injectable } from "inversify";
-import ICommand from "../../domain/command/ICommand";
+import ICommand from "../../domain/models/commands/ICommand";
 import ICommandRepository from "../../domain/repositories/ICommandRepository";
 import TYPES from "../../../TYPES";
 import "reflect-metadata"

@@ -2,12 +2,12 @@ import { inject, injectable } from "inversify";
 import ICommandService from "../../domain/services/ICommandService";
 import TYPES from "../../../TYPES";
 import ICommandRepository from "../../domain/repositories/ICommandRepository";
-import ICommand from "../../domain/command/ICommand";
-import ICommandInfo from "../../domain/command/ICommandInfo";
-import { CommandMetadataKey } from "../../domain/command/decorators/Command";
-import ICommandConstructor from "../../domain/command/ICommandConstructor";
+import ICommand from "../../domain/models/commands/ICommand";
+import ICommandInfo from "../../domain/models/commands/ICommandInfo";
+import { CommandMetadataKey } from "../../domain/models/commands/decorators/Command";
+import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import container from "../../../core/infrastructure/di/DependencyContainer";
-import CommandCollection from "../../domain/collections/CommandCollection";
+import CommandCollection from "../../domain/models/collections/CommandCollection";
 import "reflect-metadata"
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 

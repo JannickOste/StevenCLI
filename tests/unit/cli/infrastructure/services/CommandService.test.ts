@@ -1,8 +1,7 @@
-import CommandDecorator from "../../../../../src/cli/domain/command/decorators/Command";
-import ICommand from "../../../../../src/cli/domain/command/ICommand";
+import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
 import ICommandRepository from "../../../../../src/cli/domain/repositories/ICommandRepository";
 import CommandService from "../../../../../src/cli/infrastructure/services/CommandService"
-
+import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command"; "../../../../../src/cli/domain/models/commands/decorators"
 
 describe("CommandService", () => {
     const describeFunction = (key: keyof CommandService, descriptionCallback: jest.EmptyFunction) => describe(key, descriptionCallback);

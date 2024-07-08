@@ -1,6 +1,6 @@
 import { Container, inject, injectable } from "inversify";
 import TYPES from "../../../TYPES";
-import { CommandMetadataKey } from "../../domain/command/decorators/Command";
+import { CommandMetadataKey } from "../../domain/models/commands/decorators/Command";
 import { globSync } from "glob";
 import { ICommandLoader } from "../../domain/loaders/ICommandLoader";
 

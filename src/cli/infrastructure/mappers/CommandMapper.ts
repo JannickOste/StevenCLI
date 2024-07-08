@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
-import NamedCommandCollection from "../../domain/collections/NamedCommandCollection";
-import ICommand from "../../domain/command/ICommand";
-import ICommandConstructor from "../../domain/command/ICommandConstructor";
+import NamedCommandCollection from "../../domain/models/collections/NamedCommandCollection";
+import ICommand from "../../domain/models/commands/ICommand";
+import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import TYPES from "../../../TYPES";
 import ICommandService from "../../domain/services/ICommandService";
-import CommandCollection from "../../domain/collections/CommandCollection";
+import CommandCollection from "../../domain/models/collections/CommandCollection";
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 
 @injectable()
