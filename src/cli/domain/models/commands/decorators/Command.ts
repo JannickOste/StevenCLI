@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
 import ICommandInfo from "../ICommandInfo";
+import "reflect-metadata"
 
 export const CommandMetadataKey: symbol = Symbol.for("CLI::CommandMetadata")
 
