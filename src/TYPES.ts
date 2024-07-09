@@ -3,7 +3,11 @@ export default {
     container: Symbol.for("CORE::Container"),
     Core: {
         IStartup: Symbol.for("CORE::IStartup"),
-        Application: Symbol.for("CORE::Application")
+        Application: Symbol.for("CORE::Application"),
+        Events: { 
+            IEvent: Symbol.for("CORE::EVENTS::IEvent"),
+            IEventManager: Symbol.for("CORE::EVENTS::IEventManager")
+        }
     },
     CLI: {
         Parsers: {

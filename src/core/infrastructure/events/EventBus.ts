@@ -56,6 +56,7 @@ export default class EventBus{
             return;
         }
 
+
         throw new InternalApplicationError(`Event with name "${eventName}" not found...`);
     }
 
