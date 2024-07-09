@@ -1,4 +1,4 @@
-import CommandCollection from "../models/collections/CommandCollection";
+import CommandCollection from "../models/commands/collections/CommandCollection";
 import ICommand from "../models/commands/ICommand";
 import ICommandConstructor from "../models/commands/ICommandConstructor";
 import ICommandInfo from "../models/commands/ICommandInfo";

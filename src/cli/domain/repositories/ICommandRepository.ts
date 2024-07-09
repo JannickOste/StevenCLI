@@ -1,4 +1,5 @@
-import CommandCollection from "../models/collections/CommandCollection";
+import CommandCollection from "../models/commands/collections/CommandCollection";
+
 export default interface ICommandRepository 
 { 
     getAll(): Promise<CommandCollection>

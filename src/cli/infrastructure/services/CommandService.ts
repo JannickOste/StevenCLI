@@ -7,9 +7,9 @@ import ICommandInfo from "../../domain/models/commands/ICommandInfo";
 import { CommandMetadataKey } from "../../domain/models/commands/decorators/Command";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import container from "../../../core/infrastructure/di/DependencyContainer";
-import CommandCollection from "../../domain/models/collections/CommandCollection";
 import "reflect-metadata"
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
+import CommandCollection from "../../domain/models/commands/collections/CommandCollection";
 
 @injectable()
 export default class CommandService implements ICommandService 

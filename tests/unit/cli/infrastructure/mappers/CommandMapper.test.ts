@@ -1,5 +1,5 @@
-import CommandCollection from "../../../../../src/cli/domain/models/collections/CommandCollection";
-import NamedCommandCollection from "../../../../../src/cli/domain/models/collections/NamedCommandCollection";
+import CommandCollection from "../../../../../src/cli/domain/models/commands/collections/CommandCollection";
+import NamedCommandCollection from "../../../../../src/cli/domain/models/commands/collections/NamedCommandCollection";
 import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command";
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
 import ICommandService from "../../../../../src/cli/domain/services/ICommandService";

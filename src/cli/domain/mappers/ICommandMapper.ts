@@ -1,5 +1,5 @@
-import CommandCollection from "../models/collections/CommandCollection";
-import NamedCommandCollection from "../models/collections/NamedCommandCollection";
+import CommandCollection from "../models/commands/collections/CommandCollection";
+import NamedCommandCollection from "../models/commands/collections/NamedCommandCollection";
 
 interface ICommandMapper { 
     collectionToNamedCollection(

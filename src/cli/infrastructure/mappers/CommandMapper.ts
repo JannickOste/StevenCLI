@@ -1,12 +1,12 @@
 import { inject, injectable } from "inversify";
-import NamedCommandCollection from "../../domain/models/collections/NamedCommandCollection";
 import ICommand from "../../domain/models/commands/ICommand";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import TYPES from "../../../TYPES";
 import ICommandService from "../../domain/services/ICommandService";
-import CommandCollection from "../../domain/models/collections/CommandCollection";
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 import "reflect-metadata"
+import CommandCollection from "../../domain/models/commands/collections/CommandCollection";
+import NamedCommandCollection from "../../domain/models/commands/collections/NamedCommandCollection";
 
 @injectable()
 export default class CommandMapper implements ICommandMapper 
