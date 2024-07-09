@@ -1,4 +1,4 @@
-import InternalApplicationError from "../../domain/errors/InternalApplicationError";
+import CoreApplicationError from "../../domain/errors/CoreApplicationError";
 import AAplicationEvent from "../../domain/events/AAplicationEvent";
 import delaySync from "../helpers/delaySync";
 
@@ -33,7 +33,7 @@ export default class EventBus{
             return;
         }
 
-        throw new InternalApplicationError(`Event with name "${eventName}" not found...`);
+        throw new CoreApplicationError(`Event with name "${eventName}" not found...`);
     }
 
     emitSync(
@@ -57,7 +57,7 @@ export default class EventBus{
         }
 
 
-        throw new InternalApplicationError(`Event with name "${eventName}" not found...`);
+        throw new CoreApplicationError(`Event with name "${eventName}" not found...`);
     }
 
     on(
