@@ -2,9 +2,8 @@ import 'reflect-metadata';
 import { Container } from "inversify";
 import { globSync } from "glob";
 import InMemoryCommandLoader from "../../../../../src/cli/infrastructure/loaders/InMemoryCommandLoader";
-import CommandDecorator, { CommandMetadataKey } from "../../../../../src/cli/domain/models/commands/decorators/Command";
+import CommandDecorator from "../../../../../src/cli/domain/models/commands/decorators/Command";
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
-import TYPES from '../../../../../src/TYPES';
 import path from 'path';
 
 jest.mock("glob", () => ({
@@ -17,28 +16,6 @@ jest.mock("/fake/command/root/valid.ts", () => ({
   __esModule: true,
   default: ValidTestCommand,
 }), { virtual: true });
-
-class InvalidTestCommand implements ICommand { invoke() {} }
-jest.mock("/fake/command/root/invalid.ts", () => ({
-  __esModule: true,
-  default: ValidTestCommand,
-}), { virtual: true });
-
-
-@CommandDecorator({ name: "ParentCommand" })
-class ParentCommand implements ICommand { invoke() {} }
-jest.mock("/fake/command/root/parentCommand/index.ts", () => ({
-    __esModule: true,
-    default: ValidTestCommand,
-  }), { virtual: true });
-
-  
-@CommandDecorator({ name: "NestedCommand" })
-class NestedCommand implements ICommand { invoke() {} }
-jest.mock("/fake/command/root/parentCommand/index.ts", () => ({
-    __esModule: true,
-    default: ValidTestCommand,
-  }), { virtual: true });
 
 describe('InMemoryCommandLoader', () => {
     let container: Container = new Container();
@@ -87,8 +64,6 @@ describe('InMemoryCommandLoader', () => {
     });
 
     describe("registerCommand", () => {
-        
-
         it('should not register commands without valid metadata', async () => {
             class InvalidCommand {}
             const mockCommandPath = "/fake/command/root/invalidCommand/index.ts";
