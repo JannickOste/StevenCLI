@@ -10,6 +10,7 @@ import CommandNotFoundError from "../../../../../src/cli/domain/errors/CommandNo
 import CoreApplicationError from "../../../../../src/core/domain/errors/CoreApplicationError";
 import ICommandArgument from "../../../../../src/cli/domain/models/commands/ICommandArgument";
 import InvalidParameterError from "../../../../../src/cli/domain/errors/InvalidParameterError";
+import MissingParameterError from "../../../../../src/cli/domain/errors/MissingParameterError";
 
 describe("SearchCommandValidator", () => {
     let validator: SearchCommandValidator;
@@ -61,8 +62,8 @@ describe("SearchCommandValidator", () => {
         const search = { args: [] as ICommandArgument[] } as ICommandSearch;
         const errors = await validator.validate(search, mockCommand);
         expect(errors).toHaveLength(1);
-        expect(errors[0]).toBeInstanceOf(InvalidParameterError);
-        expect(errors[0].details).toBe("Required parameter: --requiredArg has not been set");
+        expect(errors[0]).toBeInstanceOf(MissingParameterError);
+        expect(errors[0].details).toBe("--requiredArg has not been set");
     });
 
     it("should return InvalidParameterError if required parameter has no value", async () => {
@@ -79,7 +80,7 @@ describe("SearchCommandValidator", () => {
         const errors = await validator.validate(search, mockCommand);
         expect(errors).toHaveLength(1);
         expect(errors[0]).toBeInstanceOf(InvalidParameterError);
-        expect(errors[0].details).toBe("Required parameter: --requiredArg has no value");
+        expect(errors[0].details).toBe("--requiredArg has no value");
     });
 
     it("should return an empty array if validation passes", async () => {

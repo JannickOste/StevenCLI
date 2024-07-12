@@ -12,6 +12,8 @@ import ICommandRepository from "./domain/repositories/ICommandRepository";
 import InMemoryCommandRepository from "./infrastructure/repositories/InMemoryCommandRepository";
 import ICommandService from "./domain/services/ICommandService";
 import CommandService from "./infrastructure/services/CommandService";
+import { ISearchCommandValidator } from "./domain/validators/ISearchCommandValidator";
+import SearchCommandValidator from "./infrastructure/validators/SearchCommandValidator";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -35,6 +37,7 @@ export default class CLIStartup implements IStartup
             )
         )
 
+        this.container.bind<ISearchCommandValidator>(TYPES.CLI.Validators.ISearchCommandValidator).to(SearchCommandValidator);
         this.container.bind<ICommandService>(TYPES.CLI.Services.ICommandService).to(CommandService)
     }
 

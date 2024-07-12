@@ -25,9 +25,12 @@ export default {
         Services: {
             ICommandService: Symbol.for("CLI::Services::ICommandService")
         },
+        Validators: {
+            ISearchCommandValidator: Symbol.for("CLI::VALIDATORS::ISearchCommandValidator")
+        },
         Constants: {
             COMMAND_ROOT: Symbol.for("CLI::CONSTANT->Command_root_directory")
         },
-        ICommand: Symbol.for("CLI::ICommand")
+        ICommand: Symbol.for("CLI::ICommand"),
     }
 }

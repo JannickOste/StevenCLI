@@ -9,10 +9,12 @@ import ICommandService from "../../domain/services/ICommandService";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import CoreApplicationError from "../../../core/domain/errors/CoreApplicationError";
 import ICommandArgument from "../../domain/models/commands/ICommandArgument";
+import MissingParameterError from "../../domain/errors/MissingParameterError";
+import { ISearchCommandValidator } from "../../domain/validators/ISearchCommandValidator";
 import InvalidParemeterError from "../../domain/errors/InvalidParameterError";
 
 @injectable()
-export default class SearchCommandValidator
+export default class SearchCommandValidator implements ISearchCommandValidator
 { 
     constructor(
         @inject(TYPES.CLI.Services.ICommandService) private readonly commandService: ICommandService
@@ -45,22 +47,16 @@ export default class SearchCommandValidator
         if("arguments" in commandInfo)
         {
             commandInfo.arguments?.filter(v => v.required).forEach((argument: ICommandArgument) => {
-                let problemStr: string | undefined = undefined;
                 const currentRequiredArgumentPrefixes = argument.prefix.split(/,\s*/)
                 const foundSearchEntry = search.args.find(v => currentRequiredArgumentPrefixes.includes(v.prefix));
                 
                 if(!foundSearchEntry)
                 {
-                    problemStr = `Required parameter: ${argument.prefix} has not been set`;
+                    validationErrors.push(new MissingParameterError(`${argument.prefix} has not been set`))
                 }
                 else if(foundSearchEntry.value === undefined)
                 {
-                    problemStr = `Required parameter: ${argument.prefix} has no value`
-                }
-    
-                if(problemStr)
-                {
-                    validationErrors.push(new InvalidParemeterError(problemStr))
+                    validationErrors.push(new InvalidParemeterError(`${argument.prefix} has no value`))
                 }
             })
         }
