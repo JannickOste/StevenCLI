@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import AAplicationEvent from "../../../core/domain/events/AAplicationEvent";
-import ICommand from "../command/ICommand";
+import ICommand from "../../domain/models/commands/ICommand";
 
 
 @injectable()

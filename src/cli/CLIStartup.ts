@@ -14,6 +14,9 @@ import ICommandService from "./domain/services/ICommandService";
 import CommandService from "./infrastructure/services/CommandService";
 import { ISearchCommandValidator } from "./domain/validators/ISearchCommandValidator";
 import SearchCommandValidator from "./infrastructure/validators/SearchCommandValidator";
+import AAplicationEvent from "../core/domain/events/AAplicationEvent";
+import CommandInvokeEvent from "./infrastructure/events/CommandInvokeEvent";
+import CommandErrorEvent from "./infrastructure/events/CommandErrorEvent";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -39,6 +42,9 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<ISearchCommandValidator>(TYPES.CLI.Validators.ISearchCommandValidator).to(SearchCommandValidator);
         this.container.bind<ICommandService>(TYPES.CLI.Services.ICommandService).to(CommandService)
+
+        this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandInvokeEvent);
+        this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandErrorEvent);
     }
 
     async configureServices(): Promise<void> {

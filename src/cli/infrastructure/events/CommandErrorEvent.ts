@@ -2,13 +2,15 @@ import { Container, inject, injectable } from "inversify";
 import AAplicationEvent from "../../../core/domain/events/AAplicationEvent";
 import TYPES from "../../../TYPES";
 import ApplicationError from "../../../core/domain/errors/ApplicationError";
-import ICommandSearch from "../command/ICommandSearch";
+import ICommandSearch from "../../domain/models/commands/ICommandSearch";
+import CLIError from "../../domain/errors/CLIError";
+import CommandNotFoundError from "../../domain/errors/CommandNotFoundError";
 
 @injectable()
 export default class CommandErrorEvent extends AAplicationEvent
 {
     constructor(
-        @inject(TYPES.Container) private readonly container: Container
+        @inject(TYPES.container) private readonly container: Container
     ) {
         super();
     }
@@ -17,7 +19,7 @@ export default class CommandErrorEvent extends AAplicationEvent
         errors: ApplicationError | ApplicationError[],
         search?: ICommandSearch
     ) {
-        const displayError = (err: CLIErrorBase) => {
+        const displayError = (err: CLIError) => {
             console.log(err.message)
             if(err.details)
             {
