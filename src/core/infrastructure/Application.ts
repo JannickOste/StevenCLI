@@ -1,6 +1,8 @@
 import { injectable } from "inversify"
 import ApplicationError from "../domain/errors/ApplicationError";
 import "reflect-metadata"
+import container from "./di/DependencyContainer";
+import CommandManager from "../../cli/infrastructure/managers/CommandManager";
 
 @injectable()
 export default class Application 
@@ -9,7 +11,9 @@ export default class Application
     {
         try 
         {
-            console.log("hello world")
+            await container.resolve(
+                CommandManager
+            ).invokeWithArgv(process.argv.slice(2))
         }
         catch(error)
         {

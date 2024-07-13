@@ -1,4 +1,4 @@
-import ICommandSearch from "../command/ICommandSearch";
+import ICommandSearch from "../models/commands/ICommandSearch";
 
 export default interface ICommandSearchParser 
 {

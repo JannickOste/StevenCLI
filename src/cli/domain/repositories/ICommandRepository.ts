@@ -1,6 +1,6 @@
-import ICommand from "../command/ICommand";
+import CommandCollection from "../models/commands/collections/CommandCollection";
 
 export default interface ICommandRepository 
 { 
-    getAll(): Promise<ICommand[]>
+    getAll(): Promise<CommandCollection>
 }

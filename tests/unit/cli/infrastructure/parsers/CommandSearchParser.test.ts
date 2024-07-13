@@ -1,4 +1,4 @@
-import ICommandSearch from "../../../../../src/cli/domain/command/ICommandSearch";
+import ICommandSearch from "../../../../../src/cli/domain/models/commands/ICommandSearch";
 import CommandSearchParser from  "../../../../../src/cli/infrastructure/parsers/CommandSearchParser"
 
 describe('CommandSearchParser', () => {

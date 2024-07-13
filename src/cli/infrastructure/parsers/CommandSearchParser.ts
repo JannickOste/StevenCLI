@@ -2,8 +2,8 @@
 import { injectable } from "inversify";
 import "reflect-metadata";
 import ICommandSearchParser from "../../domain/parsers/ICommandSearchParser";
-import ICommandSearch from "../../domain/command/ICommandSearch";
-import ICommandArgument from "../../domain/command/ICommandArgument";
+import ICommandSearch from "../../domain/models/commands/ICommandSearch";
+import ICommandArgument from "../../domain/models/commands/ICommandArgument";
 
 @injectable()
 export default class CommandSearchParser implements ICommandSearchParser 

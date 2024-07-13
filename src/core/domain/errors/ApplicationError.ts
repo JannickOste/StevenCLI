@@ -7,6 +7,7 @@ export default class ApplicationError extends Error
     }
 
     public constructor(
+        public readonly code: number,
         public readonly details?:string
     )
     {
