@@ -28,6 +28,8 @@ describe('CommandDispatcher', () => {
     dispatcher = new CommandDispatcher(
         eventManager, validator, textService
     );
+
+    jest.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
