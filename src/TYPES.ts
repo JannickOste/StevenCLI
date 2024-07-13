@@ -13,8 +13,12 @@ export default {
         Parsers: {
             ICommandSearchParser: Symbol.for("CLI::PARSERS:ICommandSearchParser")
         },
+        Dispatchers: {
+            ICommandDispatcher: Symbol.for("CLI::DISPATCHERS::ICommandDispatcher")
+        },
         mappers: {
-            ICommandMapper: Symbol.for("CLI::Mappers::ICommandMapper")
+            ICommandMapper: Symbol.for("CLI::Mappers::ICommandMapper"),
+            ICommandSearchMapper: Symbol.for("CLI::MAPPERS::ICommandSearchMapper")
         },
         Loaders: {
             ICommandLoader:  Symbol.for("CLI::LOADERS:ICommandLoader")

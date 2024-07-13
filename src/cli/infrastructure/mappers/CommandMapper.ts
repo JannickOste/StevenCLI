@@ -1,22 +1,15 @@
-import { inject, injectable } from "inversify";
+import {  injectable } from "inversify";
 import ICommand from "../../domain/models/commands/ICommand";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
-import TYPES from "../../../TYPES";
-import ICommandService from "../../domain/services/ICommandService";
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 import "reflect-metadata"
 import CommandCollection from "../../domain/models/commands/collections/CommandCollection";
 import NamedCommandCollection from "../../domain/models/commands/collections/NamedCommandCollection";
+import getCommandInfo from "../helpers/getCommandInfo";
 
 @injectable()
 export default class CommandMapper implements ICommandMapper 
 { 
-    constructor(
-        @inject(TYPES.CLI.Services.ICommandService) private readonly service: ICommandService
-    ) {
-
-    }
-
 
     collectionToNamedCollection(
         commands: CommandCollection
@@ -24,7 +17,7 @@ export default class CommandMapper implements ICommandMapper
         return Object.fromEntries(
             commands.map(
                 (command): [string | undefined, ICommand] => {
-                    const commandName = this.service.getCommandInfo(command.constructor as ICommandConstructor)?.name; 
+                    const commandName = getCommandInfo(command.constructor as ICommandConstructor)?.name; 
 
                     return [commandName, command];
                 }

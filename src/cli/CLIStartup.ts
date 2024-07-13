@@ -17,6 +17,11 @@ import SearchCommandValidator from "./infrastructure/validators/SearchCommandVal
 import AAplicationEvent from "../core/domain/events/AAplicationEvent";
 import CommandInvokeEvent from "./infrastructure/events/CommandInvokeEvent";
 import CommandErrorEvent from "./infrastructure/events/CommandErrorEvent";
+import CommandSearchMapper from "./infrastructure/mappers/CommandSearchMapper";
+import { ICommandSearchMapper } from "./domain/mappers/ICommandSearchMapper";
+import ICommandMapper from "./domain/mappers/ICommandMapper";
+import CommandMapper from "./infrastructure/mappers/CommandMapper";
+import CommandDispatcher from "./infrastructure/dispatchers/CommandDispatcher";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -45,6 +50,11 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandInvokeEvent);
         this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandErrorEvent);
+
+        this.container.bind<ICommandSearchMapper>(TYPES.CLI.mappers.ICommandSearchMapper).to(CommandSearchMapper)
+        this.container.bind<ICommandMapper>(TYPES.CLI.mappers.ICommandMapper).to(CommandMapper)
+        
+        this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
     }
 
     async configureServices(): Promise<void> {
