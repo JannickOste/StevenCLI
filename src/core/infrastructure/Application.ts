@@ -11,7 +11,7 @@ export default class Application
     {
         try 
         {
-            container.resolve(
+            await container.resolve(
                 CommandManager
             ).invokeWithArgv(process.argv.slice(2))
         }
