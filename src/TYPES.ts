@@ -20,6 +20,9 @@ export default {
             ICommandMapper: Symbol.for("CLI::Mappers::ICommandMapper"),
             ICommandSearchMapper: Symbol.for("CLI::MAPPERS::ICommandSearchMapper")
         },
+        Managers: {
+            ICommandManager: Symbol.for("CLI::MANAGERS::ICommandManager")
+        },
         Loaders: {
             ICommandLoader:  Symbol.for("CLI::LOADERS:ICommandLoader")
         },

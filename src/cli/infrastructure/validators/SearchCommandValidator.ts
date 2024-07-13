@@ -1,27 +1,21 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import ICommand from "../../domain/models/commands/ICommand";
 import ICommandSearch from "../../domain/models/commands/ICommandSearch";
 import CLIError from "../../domain/errors/CLIError";
 import NoInputError from "../../domain/errors/NoInputError";
 import CommandNotFoundError from "../../domain/errors/CommandNotFoundError";
-import TYPES from "../../../TYPES";
-import ICommandService from "../../domain/services/ICommandService";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import CoreApplicationError from "../../../core/domain/errors/CoreApplicationError";
 import ICommandArgument from "../../domain/models/commands/ICommandArgument";
 import MissingParameterError from "../../domain/errors/MissingParameterError";
 import { ISearchCommandValidator } from "../../domain/validators/ISearchCommandValidator";
 import InvalidParemeterError from "../../domain/errors/InvalidParameterError";
+import getCommandInfo from "../helpers/getCommandInfo";
 
 @injectable()
 export default class SearchCommandValidator implements ISearchCommandValidator
 { 
-    constructor(
-        @inject(TYPES.CLI.Services.ICommandService) private readonly commandService: ICommandService
-    ) {
-
-    }
-
+ 
     async validate(
         search?: ICommandSearch, 
         command?: ICommand
@@ -37,7 +31,7 @@ export default class SearchCommandValidator implements ISearchCommandValidator
             return [new CommandNotFoundError()]
         }
 
-        const commandInfo = this.commandService.getCommandInfo(command.constructor as ICommandConstructor);
+        const commandInfo = getCommandInfo(command.constructor as ICommandConstructor);
         if(!commandInfo)
         {
             return [new CoreApplicationError(`No commandInfo found for ${command.constructor.name}`)]

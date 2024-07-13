@@ -22,6 +22,8 @@ import { ICommandSearchMapper } from "./domain/mappers/ICommandSearchMapper";
 import ICommandMapper from "./domain/mappers/ICommandMapper";
 import CommandMapper from "./infrastructure/mappers/CommandMapper";
 import CommandDispatcher from "./infrastructure/dispatchers/CommandDispatcher";
+import ICommandManager from "./domain/managers/ICommandManager";
+import CommandManager from "./infrastructure/managers/CommandManager";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -53,8 +55,9 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<ICommandSearchMapper>(TYPES.CLI.mappers.ICommandSearchMapper).to(CommandSearchMapper)
         this.container.bind<ICommandMapper>(TYPES.CLI.mappers.ICommandMapper).to(CommandMapper)
-        
+
         this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
+        this.container.bind<ICommandManager>(TYPES.CLI.Managers.ICommandManager).to(CommandManager)
     }
 
     async configureServices(): Promise<void> {
