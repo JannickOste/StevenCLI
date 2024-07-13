@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Container } from "inversify";
-import SearchCommandValidator from "../../../../../src/cli/infrastructure/validators/SearchCommandValidator"
+import SearchCommandValidator from "../../../../../src/cli/infrastructure/validators/SearchCommandValidator";
 import ICommandService from "../../../../../src/cli/domain/services/ICommandService";
 import TYPES from "../../../../../src/TYPES";
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
@@ -11,6 +11,9 @@ import CoreApplicationError from "../../../../../src/core/domain/errors/CoreAppl
 import ICommandArgument from "../../../../../src/cli/domain/models/commands/ICommandArgument";
 import InvalidParameterError from "../../../../../src/cli/domain/errors/InvalidParameterError";
 import MissingParameterError from "../../../../../src/cli/domain/errors/MissingParameterError";
+import getCommandInfo from "../../../../../src/cli/infrastructure/helpers/getCommandInfo";
+
+jest.mock('../../../../../src/cli/infrastructure/helpers/getCommandInfo');
 
 describe("SearchCommandValidator", () => {
     let validator: SearchCommandValidator;
@@ -18,12 +21,13 @@ describe("SearchCommandValidator", () => {
 
     beforeEach(() => {
         const container = new Container();
-        mockCommandService = {
-            getCommandInfo: jest.fn()
-        } as unknown as ICommandService;
-
+        mockCommandService = {} as unknown as ICommandService;
         container.bind<ICommandService>(TYPES.CLI.Services.ICommandService).toConstantValue(mockCommandService);
         validator = container.resolve(SearchCommandValidator);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it("should return NoInputError if search is not provided", async () => {
@@ -39,9 +43,9 @@ describe("SearchCommandValidator", () => {
     });
 
     it("should return CoreApplicationError if no commandInfo is found for the command", async () => {
-        class CommandMock implements ICommand {async invoke() {}}
+        class CommandMock implements ICommand { async invoke() {} }
         const mockCommand = new CommandMock();
-        (mockCommandService.getCommandInfo as jest.Mock).mockReturnValue(null);
+        (getCommandInfo as jest.Mock).mockReturnValue(null);
 
         const errors = await validator.validate({} as ICommandSearch, mockCommand);
         expect(errors).toHaveLength(1);
@@ -50,14 +54,14 @@ describe("SearchCommandValidator", () => {
     });
 
     it("should return InvalidParameterError if required parameter is missing", async () => {
-        class CommandMock implements ICommand {async invoke() {}}
+        class CommandMock implements ICommand { async invoke() {} }
         const mockCommand = new CommandMock();
         const commandInfo = {
             arguments: [
                 { prefix: "--requiredArg", description: "A required argument", required: true }
             ]
         };
-        (mockCommandService.getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
+        (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
 
         const search = { args: [] as ICommandArgument[] } as ICommandSearch;
         const errors = await validator.validate(search, mockCommand);
@@ -67,14 +71,14 @@ describe("SearchCommandValidator", () => {
     });
 
     it("should return InvalidParameterError if required parameter has no value", async () => {
-        class CommandMock implements ICommand {async invoke() {}}
+        class CommandMock implements ICommand { async invoke() {} }
         const mockCommand = new CommandMock();
         const commandInfo = {
             arguments: [
                 { prefix: "--requiredArg", description: "A required argument", required: true }
             ]
         };
-        (mockCommandService.getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
+        (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
 
         const search = { args: [{ prefix: "--requiredArg", value: undefined }] } as ICommandSearch;
         const errors = await validator.validate(search, mockCommand);
@@ -84,14 +88,14 @@ describe("SearchCommandValidator", () => {
     });
 
     it("should return an empty array if validation passes", async () => {
-        class CommandMock implements ICommand {async invoke() {}}
+        class CommandMock implements ICommand { async invoke() {} }
         const mockCommand = new CommandMock();
         const commandInfo = {
             arguments: [
                 { prefix: "--requiredArg", description: "A required argument", required: true }
             ]
         };
-        (mockCommandService.getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
+        (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
 
         const search = { args: [{ prefix: "--requiredArg", value: "someValue" }] } as ICommandSearch;
         const errors = await validator.validate(search, mockCommand);
