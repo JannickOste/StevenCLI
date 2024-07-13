@@ -33,6 +33,9 @@ export default {
             ICommandService: Symbol.for("CLI::Services::ICommandService"),
             ICommandTextService: Symbol.for("CLI::SERVICES::ICommandTextService")
         },
+        Serializers: {
+            ICommandInfoSerializers: Symbol.for("CLI::SERIALIZERS::ICommandInfoSerializer")
+        },
         Validators: {
             ISearchCommandValidator: Symbol.for("CLI::VALIDATORS::ISearchCommandValidator")
         },
