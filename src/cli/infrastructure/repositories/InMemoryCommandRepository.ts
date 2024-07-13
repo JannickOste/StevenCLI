@@ -14,6 +14,13 @@ export default class InMemoryCommandRepository implements ICommandRepository
     }
  
     async getAll(): Promise<ICommand[]> {
-        return this.container.getAll<ICommand>(TYPES.CLI.ICommand);
+        try 
+        {
+            return this.container.getAll<ICommand>(TYPES.CLI.ICommand);
+        }
+        catch 
+        {
+            return []
+        }
     } 
 }
