@@ -30,7 +30,8 @@ export default {
             ICommandRepository: Symbol.for("CLI::Repositories::CommandRepository")
         },
         Services: {
-            ICommandService: Symbol.for("CLI::Services::ICommandService")
+            ICommandService: Symbol.for("CLI::Services::ICommandService"),
+            ICommandTextService: Symbol.for("CLI::SERVICES::ICommandTextService")
         },
         Validators: {
             ISearchCommandValidator: Symbol.for("CLI::VALIDATORS::ISearchCommandValidator")

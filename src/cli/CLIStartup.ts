@@ -24,6 +24,8 @@ import CommandMapper from "./infrastructure/mappers/CommandMapper";
 import CommandDispatcher from "./infrastructure/dispatchers/CommandDispatcher";
 import ICommandManager from "./domain/managers/ICommandManager";
 import CommandManager from "./infrastructure/managers/CommandManager";
+import ICommandTextService from "./domain/services/ICommandTextService";
+import CommandTextService from "./infrastructure/services/CommandTextService";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -58,6 +60,7 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
         this.container.bind<ICommandManager>(TYPES.CLI.Managers.ICommandManager).to(CommandManager)
+        this.container.bind<ICommandTextService>(TYPES.CLI.Services.ICommandTextService).to(CommandTextService)
     }
 
     async configureServices(): Promise<void> {
