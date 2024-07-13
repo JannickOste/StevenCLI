@@ -37,6 +37,7 @@ export default class CLIStartup implements IStartup
     }
 
     async registerServices(): Promise<void> {
+        this.container.bind<ICommandTextService>(TYPES.CLI.Services.ICommandTextService).to(CommandTextService)
         this.container.bind<ICommandSearchParser>(TYPES.CLI.Parsers.ICommandSearchParser).to(CommandSearchParser)
         this.container.bind<ICommandLoader>(TYPES.CLI.Loaders.ICommandLoader).to(InMemoryCommandLoader);
         this.container.bind<ICommandRepository>(TYPES.CLI.Repositories.ICommandRepository).to(InMemoryCommandRepository);
@@ -60,15 +61,12 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
         this.container.bind<ICommandManager>(TYPES.CLI.Managers.ICommandManager).to(CommandManager)
-        this.container.bind<ICommandTextService>(TYPES.CLI.Services.ICommandTextService).to(CommandTextService)
     }
 
     async configureServices(): Promise<void> {
-
         for(const commandLoader of this.container.getAll<ICommandLoader>(TYPES.CLI.Loaders.ICommandLoader))
         {
             await commandLoader.loadAll()
         }
-
     }
 }

@@ -6,13 +6,15 @@ import ICommand from "../../domain/models/commands/ICommand";
 import CommandErrorEvent from "../events/CommandErrorEvent";
 import { ISearchCommandValidator } from "../../domain/validators/ISearchCommandValidator";
 import CommandInvokeEvent from "../events/CommandInvokeEvent";
+import ICommandTextService from "../../domain/services/ICommandTextService";
 
 @injectable()
 export default class CommandDispatcher
 {
     constructor(       
         @inject(TYPES.Core.Events.IEventManager) private readonly eventManager: EventManager,
-        @inject(TYPES.CLI.Validators.ISearchCommandValidator) private readonly validator: ISearchCommandValidator
+        @inject(TYPES.CLI.Validators.ISearchCommandValidator) private readonly validator: ISearchCommandValidator,
+        @inject(TYPES.CLI.Services.ICommandTextService) private readonly textService: ICommandTextService
     ) {
 
     }
@@ -21,6 +23,7 @@ export default class CommandDispatcher
         search: ICommandSearch,
         commandModelType?: ICommand
     ) {
+        console.log(`${this.textService.getCLIHeader()}\n`)
 
         const errors = await this.validator.validate(
             search, 

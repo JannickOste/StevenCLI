@@ -1,7 +1,7 @@
 {
   "name": "steven",
   "version": "0.0.0",
-  "description": "true",
+  "description": "A Domain driven CLI service to assist you with all your needs ",
   "main": "jest.config.js",
   "scripts": {
     "test": "jest --passWithNoTests",

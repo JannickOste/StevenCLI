@@ -1,31 +1,33 @@
 import "reflect-metadata";
-import { Container } from "inversify";
 import CommandDispatcher from "../../../../../src/cli/infrastructure/dispatchers/CommandDispatcher"
-import TYPES from "../../../../../src/TYPES";
 import EventManager from "../../../../../src/core/infrastructure/managers/EventManager";
 import { ISearchCommandValidator } from "../../../../../src/cli/domain/validators/ISearchCommandValidator";
 import ICommandSearch from "../../../../../src/cli/domain/models/commands/ICommandSearch";
 import CommandErrorEvent from "../../../../../src/cli/infrastructure/events/CommandErrorEvent";
 import ICommand from "../../../../../src/cli/domain/models/commands/ICommand";
 import CommandInvokeEvent from "../../../../../src/cli/infrastructure/events/CommandInvokeEvent";
+import ICommandTextService from "../../../../../src/cli/domain/services/ICommandTextService";
+import CLIError from "../../../../../src/cli/domain/errors/CLIError";
+import CommandNotFoundError from "../../../../../src/cli/domain/errors/CommandNotFoundError";
 
-const mockEventManager = {
-  emitSync: jest.fn()
-};
-
-const mockValidator = {
-  validate: jest.fn()
-};
 
 describe('CommandDispatcher', () => {
   let dispatcher: CommandDispatcher;
+  let textService: jest.Mocked<ICommandTextService>;
+  let validator: jest.Mocked<ISearchCommandValidator>;
+  let eventManager: jest.Mocked<EventManager>;
 
   beforeEach(() => {
-    const container = new Container();
-    container.bind<EventManager>(TYPES.Core.Events.IEventManager).toConstantValue(mockEventManager as any);
-    container.bind<ISearchCommandValidator>(TYPES.CLI.Validators.ISearchCommandValidator).toConstantValue(mockValidator as any);
+    textService = {getCLIHeader: jest.fn(), getTextBoxed: jest.fn()}
+    validator = {validate: jest.fn()}
+    eventManager = ( {
+      emitSync: jest.fn(),
+      emit: jest.fn()
+    } as unknown) as jest.Mocked<EventManager>;
 
-    dispatcher = container.resolve(CommandDispatcher);
+    dispatcher = new CommandDispatcher(
+        eventManager, validator, textService
+    );
   });
 
   afterEach(() => {
@@ -34,14 +36,14 @@ describe('CommandDispatcher', () => {
 
   describe("dispatch", () => {
     it('should emit CommandErrorEvent if validation fails', async () => {
-        const errors = ['error1'];
-        mockValidator.validate.mockResolvedValue(errors);
+        const errors = [new CLIError("some error")];
+        validator.validate.mockResolvedValue(errors);
     
         const search: ICommandSearch = { args: [] } as unknown as ICommandSearch;
     
         await dispatcher.dispatch(search);
     
-        expect(mockEventManager.emitSync).toHaveBeenCalledWith(
+        expect(eventManager.emitSync).toHaveBeenCalledWith(
           CommandErrorEvent,
           errors,
           search
@@ -49,13 +51,13 @@ describe('CommandDispatcher', () => {
       });
     
       it('should emit CommandErrorEvent if commandModelType is undefined', async () => {
-        const errors: string[] = [];
-        mockValidator.validate.mockResolvedValue(errors);
+        const errors = [new CommandNotFoundError()];
+        validator.validate.mockResolvedValue(errors);
     
         const search: ICommandSearch = { args: [] } as unknown as ICommandSearch;
         await dispatcher.dispatch(search, undefined);
     
-        expect(mockEventManager.emitSync).toHaveBeenCalledWith(
+        expect(eventManager.emitSync).toHaveBeenCalledWith(
           CommandErrorEvent,
           errors,
           search
@@ -63,15 +65,15 @@ describe('CommandDispatcher', () => {
       });
     
       it('should emit CommandInvokeEvent if validation passes', async () => {
-        const errors: string[] = [];
-        mockValidator.validate.mockResolvedValue(errors);
+        const errors: CLIError[] = [];
+        validator.validate.mockResolvedValue(errors);
         
         const search: ICommandSearch = { args: [{ prefix: '--test', value: 'value', default: 'default' }] } as ICommandSearch;
         const commandModelType: ICommand = {} as ICommand;
     
         await dispatcher.dispatch(search, commandModelType);
     
-        expect(mockEventManager.emitSync).toHaveBeenCalledWith(
+        expect(eventManager.emitSync).toHaveBeenCalledWith(
           CommandInvokeEvent,
           commandModelType,
           { '--test': 'value' }
@@ -79,15 +81,15 @@ describe('CommandDispatcher', () => {
       });
     
       it('should use default value if argument value is undefined', async () => {
-        const errors: string[] = [];
-        mockValidator.validate.mockResolvedValue(errors);
+        const errors: CLIError[] = [];
+        validator.validate.mockResolvedValue(errors);
     
         const search: ICommandSearch = { args: [{ prefix: '--test', value: undefined, default: 'default' }] } as ICommandSearch;
         const commandModelType: ICommand = {} as ICommand;
     
         await dispatcher.dispatch(search, commandModelType);
     
-        expect(mockEventManager.emitSync).toHaveBeenCalledWith(
+        expect(eventManager.emitSync).toHaveBeenCalledWith(
           CommandInvokeEvent,
           commandModelType,
           { '--test': 'default' }

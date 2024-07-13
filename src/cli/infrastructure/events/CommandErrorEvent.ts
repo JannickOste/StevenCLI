@@ -2,9 +2,12 @@ import { Container, inject, injectable } from "inversify";
 import AAplicationEvent from "../../../core/domain/events/AAplicationEvent";
 import TYPES from "../../../TYPES";
 import ApplicationError from "../../../core/domain/errors/ApplicationError";
-import ICommandSearch from "../../domain/models/commands/ICommandSearch";
 import CLIError from "../../domain/errors/CLIError";
 import CommandNotFoundError from "../../domain/errors/CommandNotFoundError";
+import ENV_CONFIG from "../../../ENV_CONFIG";
+import InvalidParemeterError from "../../domain/errors/InvalidParameterError";
+import MissingParameterError from "../../domain/errors/MissingParameterError";
+import NoInputError from "../../domain/errors/NoInputError";
 
 @injectable()
 export default class CommandErrorEvent extends AAplicationEvent
@@ -15,43 +18,50 @@ export default class CommandErrorEvent extends AAplicationEvent
         super();
     }
 
+    private displayErrors(errors: CLIError[]) 
+    {
+        for(const error of errors)
+        {
+            let errorMessage: string | undefined = undefined;
+
+            switch(error.name)
+            {
+                case CommandNotFoundError.name:
+                    errorMessage = `Command not found\n- Try running '${ENV_CONFIG.name} --help' to display all commands`;
+                    break;
+
+                case MissingParameterError.name:
+                case InvalidParemeterError.name: 
+                    errorMessage = error.name;
+                    if("details" in error && error.details?.length)
+                    {
+                        errorMessage += `: ${error.details}`
+                    }
+                    break;
+                
+                case NoInputError.name:
+                    errorMessage = `Welcome to ${ENV_CONFIG.name}, try running '${ENV_CONFIG.name} --help' to display all commands`;
+                    break;
+
+
+                default: 
+                    errorMessage = `Unkown error occcured: ${error.name}`;
+                    if("details" in error && error.details?.length)
+                    {
+                        errorMessage += `->${error.message}`
+                    }
+                    break;
+            }
+
+            console.log(errorMessage)
+        }
+    }
+
     public async invoke(
-        errors: ApplicationError | ApplicationError[],
-        search?: ICommandSearch
+        errors: ApplicationError | ApplicationError[]
     ) {
-        const displayError = (err: CLIError) => {
-            console.log(err.message)
-            if(err.details)
-            {
-                console.log(`- ${err.details}`)
-            }
-        }
 
-        if(!Array.isArray(errors))
-        {
-            displayError(errors)
-            errors = [errors]
-        }
-        else 
-        {
-            for(const error of errors)
-            {
-                displayError(error)
-                console.log("\n")
-            }
-        }
-
-        if(search && !(errors.length === 1 && errors.at(0) instanceof CommandNotFoundError))
-        {
-            const args = []
-            for(const arg of search.args)
-            {
-                if(arg.prefix.length) break;
-
-                args.push(arg.value)
-            }
-
-            console.log(`\nTry running "${search.name.split("/").join(" ")} --help" to display additional information.`)
-        }
+        errors = !Array.isArray(errors) ? [errors] : errors;
+        this.displayErrors(errors)
     }
 }
