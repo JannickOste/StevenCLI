@@ -3,13 +3,12 @@ import ICommandService from "../../domain/services/ICommandService";
 import TYPES from "../../../TYPES";
 import ICommandRepository from "../../domain/repositories/ICommandRepository";
 import ICommand from "../../domain/models/commands/ICommand";
-import ICommandInfo from "../../domain/models/commands/ICommandInfo";
-import { CommandMetadataKey } from "../../domain/models/commands/decorators/Command";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
 import container from "../../../core/infrastructure/di/DependencyContainer";
 import "reflect-metadata"
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 import CommandCollection from "../../domain/models/commands/collections/CommandCollection";
+import getCommandInfo from "../helpers/getCommandInfo";
 
 @injectable()
 export default class CommandService implements ICommandService 
@@ -21,30 +20,22 @@ export default class CommandService implements ICommandService
 
     }
 
-    getCommandInfo(command: ICommandConstructor): ICommandInfo | undefined {
-        const metadata: unknown = Reflect.getMetadata(CommandMetadataKey, command);
-        if(!metadata || typeof metadata !== "object" || !("name" in metadata))
-            return undefined;
-
-        return (metadata as ICommandInfo);
-    }
-
     async getAll(): Promise<CommandCollection> {
         return (await this.repository.getAll())
                           .filter(
                             (command) =>  "invoke" in command
-                                        && this.getCommandInfo(command.constructor as ICommandConstructor) !== undefined
+                                        && getCommandInfo(command.constructor as ICommandConstructor) !== undefined
                         )
     }
 
     getChildByName(command: ICommandConstructor, name: string)
     {
-        const info = this.getCommandInfo(command);
+        const info = getCommandInfo(command);
         if(!info || !Array.isArray(info.children)) return undefined;
 
         for(let child of info.children)
         {
-            const childInfo = this.getCommandInfo(child);
+            const childInfo = getCommandInfo(child);
             if(!childInfo || childInfo.name !== name) continue;
 
             return child;
