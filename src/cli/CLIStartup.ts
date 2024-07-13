@@ -26,6 +26,9 @@ import ICommandManager from "./domain/managers/ICommandManager";
 import CommandManager from "./infrastructure/managers/CommandManager";
 import ICommandTextService from "./domain/services/ICommandTextService";
 import CommandTextService from "./infrastructure/services/CommandTextService";
+import CommandHelpEvent from "./infrastructure/events/CommandHelpEvent";
+import { ICommandInfoSerializer } from "./domain/serializers/ICommandInfoSerializer";
+import CommandInfoSerializer from "./infrastructure/serializers/CommandInfoSerializer";
 
 @injectable()
 export default class CLIStartup implements IStartup 
@@ -55,12 +58,14 @@ export default class CLIStartup implements IStartup
 
         this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandInvokeEvent);
         this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandErrorEvent);
+        this.container.bind<AAplicationEvent>(TYPES.Core.Events.IEvent).to(CommandHelpEvent);
 
         this.container.bind<ICommandSearchMapper>(TYPES.CLI.mappers.ICommandSearchMapper).to(CommandSearchMapper)
         this.container.bind<ICommandMapper>(TYPES.CLI.mappers.ICommandMapper).to(CommandMapper)
 
         this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
         this.container.bind<ICommandManager>(TYPES.CLI.Managers.ICommandManager).to(CommandManager)
+        this.container.bind<ICommandInfoSerializer>(TYPES.CLI.Serializers.ICommandInfoSerializers).to(CommandInfoSerializer)
     }
 
     async configureServices(): Promise<void> {

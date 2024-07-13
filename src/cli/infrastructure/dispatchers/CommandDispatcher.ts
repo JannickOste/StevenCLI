@@ -7,6 +7,7 @@ import CommandErrorEvent from "../events/CommandErrorEvent";
 import { ISearchCommandValidator } from "../../domain/validators/ISearchCommandValidator";
 import CommandInvokeEvent from "../events/CommandInvokeEvent";
 import ICommandTextService from "../../domain/services/ICommandTextService";
+import CommandHelpEvent from "../events/CommandHelpEvent";
 
 @injectable()
 export default class CommandDispatcher
@@ -19,11 +20,27 @@ export default class CommandDispatcher
 
     }
 
+    private isHelpTrigger(
+        search: ICommandSearch
+    ) {
+        return search.name === "--help" 
+            || search.args.at(search.args.length-1)?.prefix === "--help"
+    }
+
+
     public async dispatch(
         search: ICommandSearch,
         commandModelType?: ICommand
     ) {
         console.log(`${this.textService.getCLIHeader()}\n`)
+        
+        if(this.isHelpTrigger(search))
+        {
+            return this.eventManager.emitSync(
+                CommandHelpEvent, 
+                commandModelType
+            )
+        }
 
         const errors = await this.validator.validate(
             search, 
