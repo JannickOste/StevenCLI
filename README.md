@@ -14,7 +14,7 @@ To define commands for your CLI application, place your command classes in the `
 
 1. **Command Group**: Commands can be organized into groups and sub-groups. Here's how to set up a command group and its sub-commands:
 
-   - **Command Group File** (`src/app/commands/example/subGroup/nameDoesntMatter.ts`):
+   - **Command Group File** (`src/app/commands/COMMAND_NAME/index.ts`):
 
      ```typescript
      import { CommandDecorator } from 'path-to-decorators';
@@ -42,7 +42,7 @@ To define commands for your CLI application, place your command classes in the `
      }
      ```
 
-   - **Sub-command File** (`src/app/commands/example/subGroup/additionalSubGroup/neitherDoesThisOne.ts`):
+   - **Sub-command File** (`src/app/commands/COMMAND_NAME/SOME_FOLDER/index.ts`):
 
      ```typescript
      import { CommandDecorator } from 'path-to-decorators';
