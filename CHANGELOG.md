@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/JannickOste/StevenCLI/compare/v0.3.0...v0.4.0) (2024-07-14)
+
+
+### Features
+
+* (un)installer added ([9ce9d1c](https://github.com/JannickOste/StevenCLI/commit/9ce9d1cf9bd890e9f840864d1f99487087638186))
+
 # [0.3.0](https://github.com/JannickOste/StevenCLI/compare/v0.2.0...v0.3.0) (2024-07-13)
 
 
