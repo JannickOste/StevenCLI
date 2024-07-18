@@ -9,7 +9,6 @@ import CoreApplicationError from '../../../../../src/core/domain/errors/CoreAppl
 import { ICommandSearchMapper } from '../../../../../src/cli/domain/mappers/ICommandSearchMapper';
 import getCommandInfo from '../../../../../src/cli/infrastructure/helpers/getCommandInfo';
 
-// Mock the getCommandInfo function
 jest.mock('../../../../../src/cli/infrastructure/helpers/getCommandInfo');
 
 describe('CommandSearchMapper', () => {
@@ -40,8 +39,8 @@ describe('CommandSearchMapper', () => {
 
     it('should add argument if last slice of search name does not match command name', () => {
       const commandInfo = {
-        name: 'commandName',
-        arguments: [{ prefix: '[arg]', default: 'default' }]
+        name: 'test',
+        arguments: [{ prefix: '[arg]' }]
       };
       (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
 
@@ -49,12 +48,11 @@ describe('CommandSearchMapper', () => {
 
       const result = commandSearchMapper.mapSearchToCommand(search, mockCommand);
 
-      expect(result.args).toContainEqual({
+      expect(result.args).toStrictEqual([{
         prefix: '[arg]',
-        value: 'command',
-        default: 'default'
-      });
-      expect(result.name).toBe('test');
+        value: 'command'
+      }]);
+      expect(result.name).toBe('test/command');
     });
 
     it('should map arguments correctly', () => {
@@ -102,5 +100,41 @@ describe('CommandSearchMapper', () => {
         { prefix: '--arg2, -b', value: 'default2', default: 'default2' }
       ]);
     });
+
+    it('should handle named optional arguments', () => {
+      const commandInfo = {
+        name: 'commandName',
+        arguments: [{ prefix: '[arg]', default: 'default' }]
+      };
+      (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
+
+      const search: ICommandSearch = { name: 'commandName/optional', args: [] };
+
+      const result = commandSearchMapper.mapSearchToCommand(search, mockCommand);
+
+      expect(result.args).toContainEqual({
+        prefix: '[arg]',
+        value: 'optional',
+        default: 'default'
+      });
+    });
+
+    it('should handle iterable optional arguments', () => {
+      const commandInfo = {
+        name: 'commandName',
+        arguments: [{ prefix: '*' }]
+      };
+      (getCommandInfo as jest.Mock).mockReturnValue(commandInfo);
+
+      const search: ICommandSearch = { name: 'commandName/segment1/segment2', args: [] };
+
+      const result = commandSearchMapper.mapSearchToCommand(search, mockCommand);
+
+      expect(result.args).toContainEqual({
+        prefix: '*',
+        value: ['segment1', 'segment2']
+      });
+    });
+
   });
 });
