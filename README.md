@@ -6,11 +6,49 @@ Steven is designed to help you build powerful command-line interfaces (CLI) with
 
 ## Getting Started
 
-### Command Structure
+### Installation
+
+To install the CLI application globally, you can use the provided installation script:
+
+1. Run the installation script:
+
+   ```bash
+   ./install.sh
+   ```
+
+2. This will make the CLI tool available globally. You can now use the command `steven` from anywhere in your terminal.
+
+### Usage
+
+After installation, you can run the CLI tool using the command `steven`. Here are some common usage examples:
+
+- **Display Help**: To view all available commands and their descriptions, use:
+
+  ```bash
+  steven --help
+  ```
+
+- **Run a Command**: To execute a specific command, simply type:
+
+  ```bash
+  steven <command> [options]
+  ```
+
+### Uninstallation
+
+To remove the CLI tool from your system, you can use the provided uninstallation script:
+
+1. Run the uninstallation script:
+
+   ```bash
+   ./uninstall.sh
+   ```
+
+2. This will remove the global installation, and the `steven` command will no longer be available.
+
+### Creating a com,mand
 
 To define commands for your CLI application, place your command classes in the `src/app/commands` directory. The framework will automatically detect and register these commands.
-
-#### Example Command Structure
 
 1. **Command Group**: Commands can be organized into groups and sub-groups. Here's how to set up a command group and its sub-commands:
 
@@ -65,46 +103,6 @@ To define commands for your CLI application, place your command classes in the `
 - **Command Invocation**: When you run your CLI, the framework parses the input arguments, identifies the appropriate command, and invokes it. For commands that belong to a group, it will navigate through the hierarchy based on the input.
 
 - **Events and Output**: Commands can emit events and handle outputs as defined in their `invoke` methods. For example, a command can display help information or perform specific actions.
-
-### Installation
-
-To install the CLI application globally, you can use the provided installation script:
-
-1. Run the installation script:
-
-   ```bash
-   ./install.sh
-   ```
-
-2. This will make the CLI tool available globally. You can now use the command `steven` from anywhere in your terminal.
-
-### Usage
-
-After installation, you can run the CLI tool using the command `steven`. Here are some common usage examples:
-
-- **Display Help**: To view all available commands and their descriptions, use:
-
-  ```bash
-  steven --help
-  ```
-
-- **Run a Command**: To execute a specific command, simply type:
-
-  ```bash
-  steven <command> [options]
-  ```
-
-### Uninstallation
-
-To remove the CLI tool from your system, you can use the provided uninstallation script:
-
-1. Run the uninstallation script:
-
-   ```bash
-   ./uninstall.sh
-   ```
-
-2. This will remove the global installation, and the `steven` command will no longer be available.
 
 ### Additional Information
 

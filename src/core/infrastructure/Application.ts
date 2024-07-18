@@ -1,19 +1,24 @@
-import { injectable } from "inversify"
+import { inject, injectable } from "inversify"
 import ApplicationError from "../domain/errors/ApplicationError";
 import "reflect-metadata"
-import container from "./di/DependencyContainer";
-import CommandManager from "../../cli/infrastructure/managers/CommandManager";
+import TYPES from "../../TYPES";
+import ICommandManager from "../../cli/domain/managers/ICommandManager";
+import IApplication from "../domain/IApplication";
 
 @injectable()
-export default class Application 
+export default class Application implements IApplication
 {
+    constructor(
+        @inject(TYPES.CLI.Managers.ICommandManager) private readonly commandManager: ICommandManager
+    ) {
+
+    }
+
     public async main(): Promise<void> 
     {
         try 
         {
-            await container.resolve(
-                CommandManager
-            ).invokeWithArgv(process.argv.slice(2))
+            await this.commandManager.invokeWithArgv(process.argv.slice(2))
         }
         catch(error)
         {

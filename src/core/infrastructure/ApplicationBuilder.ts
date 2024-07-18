@@ -1,4 +1,5 @@
 import TYPES from "../../TYPES";
+import IApplication from "../domain/IApplication";
 import IStartup from "../domain/IStartup";
 import Application from "./Application";
 import container from "./di/DependencyContainer";
@@ -22,8 +23,8 @@ import container from "./di/DependencyContainer";
     }
 
     async build(
-
-    ): Promise<Application>
+        application: new(...args: any[]) => IApplication = Application
+    ): Promise<IApplication>
     {
         if(this.appStartupConstructor)
         {
@@ -41,6 +42,6 @@ import container from "./di/DependencyContainer";
             await dependency.configureServices()
         }
 
-        return container.resolve<Application>(Application)
+        return container.resolve<IApplication>(application)
     }
  }

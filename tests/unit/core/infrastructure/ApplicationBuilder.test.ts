@@ -6,14 +6,21 @@ import TYPES from '../../../../src/TYPES';
 import Application from '../../../../src/core/infrastructure/Application';
 
 import container from '../../../../src/core/infrastructure/di/DependencyContainer';
+import IApplication from '../../../../src/core/domain/IApplication';
 jest.mock('../../../../src/core/infrastructure/di/DependencyContainer', () => new Container());
 
 describe('ApplicationBuilder', () => {
     let appBuilder: ApplicationBuilder;
+    let mockApp: jest.Mocked<IApplication>;
+
+    @injectable()
+    class MockApp implements IApplication { main = jest.fn()}
 
     beforeEach(() => {
         jest.clearAllMocks();
         container.snapshot();
+
+        mockApp = new MockApp()
         appBuilder = new ApplicationBuilder();
     });
 
@@ -52,7 +59,7 @@ describe('ApplicationBuilder', () => {
 
             container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
 
-            await appBuilder.build();
+            await appBuilder.build(mockApp.constructor as new () => IApplication);
 
             expect(registerSpy).toHaveBeenCalled();
             expect(configureSpy).toHaveBeenCalled();
@@ -80,7 +87,7 @@ describe('ApplicationBuilder', () => {
             container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
             container.bind(TYPES.Core.IStartup).toConstantValue(appStartup);
 
-            await appBuilder.build();
+            await appBuilder.build(mockApp.constructor as new () => IApplication);
 
             expect(registerCoreSpy).toHaveBeenCalled();
             expect(configureCoreSpy).toHaveBeenCalled();
@@ -98,9 +105,9 @@ describe('ApplicationBuilder', () => {
             const coreStartup = new CoreStartup();
             container.bind(TYPES.Core.IStartup).toConstantValue(coreStartup);
 
-            const application = await appBuilder.build();
+            const app = await appBuilder.build(mockApp.constructor as new () => IApplication);
 
-            expect(application).toBeInstanceOf(Application);
+            expect(app).toBeInstanceOf(MockApp);
         });
     });
 });
