@@ -1,3 +1,17 @@
+# [0.5.0](https://github.com/JannickOste/StevenCLI/compare/v0.4.0...v0.5.0) (2024-07-18)
+
+
+### Bug Fixes
+
+* application coupling removed from app builder ([6502203](https://github.com/JannickOste/StevenCLI/commit/65022035c65d7890eb00a111dd4e55a10f396f10))
+* SubCommandItemNotFound added, forgotton in previous push ([55ebebd](https://github.com/JannickOste/StevenCLI/commit/55ebebdb0bcd090b26aaa6ee8b7cef448a1ba83c))
+* tests updated towards new behaviour of parser ([807d6a1](https://github.com/JannickOste/StevenCLI/commit/807d6a19932f33f186e6fde36bb4fd8764199c5a))
+
+
+### Features
+
+* **SearchCommandMapper:** support added for named and itterable suffix arguments ([c9ab548](https://github.com/JannickOste/StevenCLI/commit/c9ab548af5f805583117604c58e020b4f34a4696))
+
 # [0.4.0](https://github.com/JannickOste/StevenCLI/compare/v0.3.0...v0.4.0) (2024-07-14)
 
 
