@@ -4,7 +4,6 @@ import TYPES from "../../../TYPES";
 import ICommandRepository from "../../domain/repositories/ICommandRepository";
 import ICommand from "../../domain/models/commands/ICommand";
 import ICommandConstructor from "../../domain/models/commands/ICommandConstructor";
-import container from "../../../core/infrastructure/di/DependencyContainer";
 import "reflect-metadata"
 import ICommandMapper from "../../domain/mappers/ICommandMapper";
 import CommandCollection from "../../domain/models/commands/collections/CommandCollection";
@@ -28,53 +27,33 @@ export default class CommandService implements ICommandService
                         )
     }
 
-    getChildByName(command: ICommandConstructor, name: string)
-    {
-        const info = getCommandInfo(command);
-        if(!info || !Array.isArray(info.children)) return undefined;
+    async getCommandByName(name: string, returnLastAccessible: boolean = true): Promise<ICommand | undefined> {
 
-        for(let child of info.children)
-        {
-            const childInfo = getCommandInfo(child);
-            if(!childInfo || childInfo.name !== name) continue;
-
-            return child;
-        }
-
-        return undefined;
-    }
-
-    async getCommandByName(name: string): Promise<ICommand | undefined> {
-        
-        if(typeof name === "string" && name.length)
-        {
+        if (typeof name === "string" && name.length) {
             const commands = this.mapper.collectionToNamedCollection(
                 await this.getAll()
-            )
-
-            if(commands[name] !== undefined) 
-            {
-                return commands[name]
+            );
+    
+            if (commands[name] !== undefined) {
+                return commands[name];
             }
-
+            
+            let current: ICommand | undefined  = undefined;
             const nameSegments: string[] = name.split("/");
-            for(const [name, command] of Object.entries(commands))
+
+            for(let index = 1; index <  nameSegments.length && returnLastAccessible; index++)
             {
-                if(name !== nameSegments[0]) continue;
+                const currentName = nameSegments.slice(0, index).join("/")
+                const next = await this.getCommandByName(currentName, false);
 
-                nameSegments.shift()
-                let current: ICommandConstructor | undefined = command.constructor as ICommandConstructor;
-                do 
-                {
-                    const currentSegment = nameSegments.shift() ?? "";
-                    
-                    current = this.getChildByName(current, currentSegment)
-                } while(nameSegments.length && current)
-
-                return !current ? current : container.resolve(current);
+                if(!next) break;
+                current = next;
             }
+
+            return current;
         }
-        
+    
         return undefined;
     }
+    
 }

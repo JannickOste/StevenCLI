@@ -8,6 +8,7 @@ import ENV_CONFIG from "../../../ENV_CONFIG";
 import InvalidParemeterError from "../../domain/errors/InvalidParameterError";
 import MissingParameterError from "../../domain/errors/MissingParameterError";
 import NoInputError from "../../domain/errors/NoInputError";
+import SubCommandItemNotFound from "../../domain/errors/SubCommandItemNotFound";
 
 @injectable()
 export default class CommandErrorEvent extends AAplicationEvent
@@ -29,6 +30,15 @@ export default class CommandErrorEvent extends AAplicationEvent
                 case CommandNotFoundError.name:
                     errorMessage = `Command not found\n- Try running '${ENV_CONFIG.name} --help' to display all commands`;
                     break;
+
+                case SubCommandItemNotFound.name: {
+                    const commandSegments = error.details?.split("/") ?? [];
+                    errorMessage = commandSegments.length <= 1 
+                                ? 'Unknown sub item not found, error details should be specified as COMMAND_INFO.NAME/UNKOWN_ITEM'
+                                : `Option '${commandSegments.at(-1)}' not found within command '${commandSegments.at(-2)}'.\n\nRun '${ENV_CONFIG.name} ${commandSegments.slice(0, commandSegments.length - 1).join(" ")} --help' to get additional command information.`;
+       
+                    break;
+                }
 
                 case MissingParameterError.name:
                 case InvalidParemeterError.name: 

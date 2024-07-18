@@ -11,6 +11,7 @@ import MissingParameterError from "../../domain/errors/MissingParameterError";
 import { ISearchCommandValidator } from "../../domain/validators/ISearchCommandValidator";
 import InvalidParemeterError from "../../domain/errors/InvalidParameterError";
 import getCommandInfo from "../helpers/getCommandInfo";
+import SubCommandItemNotFound from "../../domain/errors/SubCommandItemNotFound";
 
 @injectable()
 export default class SearchCommandValidator implements ISearchCommandValidator
@@ -35,6 +36,19 @@ export default class SearchCommandValidator implements ISearchCommandValidator
         if(!commandInfo)
         {
             return [new CoreApplicationError(`No commandInfo found for ${command.constructor.name}`)]
+        }
+
+        if(search.name !== commandInfo.name)
+        {
+            const itterableOptionalArg = (commandInfo.arguments ?? []).find((arg) =>  arg.prefix ===  "*");
+            const namedOptionalArg = (commandInfo.arguments ?? []).find((arg) => /^\[(.*?)+\]/.test(arg.prefix))
+
+            const nameSuffix = search.name.split(`${commandInfo.name}/`)[1];
+            const nameSuffixSegments = nameSuffix.split(/\/\s*/);
+            if(!itterableOptionalArg && !namedOptionalArg)
+            {
+                return [new SubCommandItemNotFound([commandInfo.name, nameSuffixSegments[0]].join("/"))]
+            }
         }
 
         const validationErrors: CLIError[] = []; 

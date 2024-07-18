@@ -4,5 +4,5 @@ export default interface ICommandArgument
     description?: string;
     default?: unknown; 
     required?: boolean;
-    value?: string|boolean;
+    value?: string|boolean|string[];
 }

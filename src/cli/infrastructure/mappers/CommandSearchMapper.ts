@@ -22,19 +22,36 @@ export default class CommandSearchMapper implements ICommandSearchMapper
         }
         
 
-        const searchSlices = search.name.split(/\/\s*/); 
-        if(searchSlices.at(-1) !== commandInfo.name)
+        const searchSuffix = search.name.split(`${commandInfo.name}/`)[1];
+        if(searchSuffix)
         {
-            search.args = [
-                ...search.args, 
-                {
-                    prefix: commandInfo.arguments?.find(arg => /^\[(.?)+\]$/.test(arg.prefix))?.prefix ?? "",
-                    value: searchSlices.at(-1)
-                }
-            ]
+            const suffixSegments = searchSuffix.split("/"); 
+            const namedOptional = commandInfo.arguments?.find(arg => /^\[(.?)+\]$/.test(arg.prefix)); 
+            const hasItterableOptional = commandInfo.arguments?.find(arg => arg.prefix === "*") !== undefined; 
 
-            search.name = searchSlices.slice(0, -1).join("/")
+            if(namedOptional)
+            {
+                search.args = [
+                    ...search.args, 
+                    {
+                        prefix: commandInfo.arguments?.find(arg => /^\[(.?)+\]$/.test(arg.prefix))?.prefix ?? "",
+                        value: suffixSegments[0]
+                    }
+                ]
+            }
+
+            if(hasItterableOptional)
+            {
+                search.args = [
+                    ...search.args, 
+                    {
+                        prefix: "*",
+                        value: suffixSegments
+                    }
+                ]
+            }
         }
+ 
 
         const oldArgs = search.args;
         search.args = []
