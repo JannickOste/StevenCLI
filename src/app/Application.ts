@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify"
-import ApplicationError from "../domain/errors/ApplicationError";
+import ApplicationError from "../core/domain/errors/ApplicationError";
 import "reflect-metadata"
-import TYPES from "../../TYPES";
-import ICommandManager from "../../cli/domain/managers/ICommandManager";
-import IApplication from "../domain/IApplication";
+import TYPES from "../TYPES";
+import ICommandManager from "../cli/domain/managers/ICommandManager";
+import IApplication from "../core/domain/IApplication";
 
 @injectable()
 export default class Application implements IApplication

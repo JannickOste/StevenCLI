@@ -1,7 +1,7 @@
 import TYPES from "../../TYPES";
 import IApplication from "../domain/IApplication";
 import IStartup from "../domain/IStartup";
-import Application from "./Application";
+import Application from "../../app/Application";
 import container from "./di/DependencyContainer";
  
  export default class ApplicationBuilder 

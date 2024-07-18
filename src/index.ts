@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 import AppStartup from "./app/AppStartup";
-import Application from "./core/infrastructure/Application";
+import IApplication from "./core/domain/IApplication";
+import Application from "./app/Application";
 import ApplicationBuilder from "./core/infrastructure/ApplicationBuilder";
 
 
 (async() => {
-    const application: Application = await (new ApplicationBuilder()
+    const application: IApplication = await (new ApplicationBuilder()
                             .setStartUp(AppStartup)
-                            .build());
+                            .build(Application));
     
     application.main();
 })()

@@ -3,7 +3,7 @@ import { Container, injectable } from 'inversify';
 import IStartup from '../../../../src/core/domain/IStartup';
 import ApplicationBuilder from '../../../../src/core/infrastructure/ApplicationBuilder';
 import TYPES from '../../../../src/TYPES';
-import Application from '../../../../src/core/infrastructure/Application';
+import Application from '../../../../src/app/Application';
 
 import container from '../../../../src/core/infrastructure/di/DependencyContainer';
 import IApplication from '../../../../src/core/domain/IApplication';

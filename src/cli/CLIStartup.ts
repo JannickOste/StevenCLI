@@ -66,6 +66,7 @@ export default class CLIStartup implements IStartup
         this.container.bind<CommandDispatcher>(TYPES.CLI.Dispatchers.ICommandDispatcher).to(CommandDispatcher)
         this.container.bind<ICommandManager>(TYPES.CLI.Managers.ICommandManager).to(CommandManager)
         this.container.bind<ICommandInfoSerializer>(TYPES.CLI.Serializers.ICommandInfoSerializers).to(CommandInfoSerializer)
+
     }
 
     async configureServices(): Promise<void> {
