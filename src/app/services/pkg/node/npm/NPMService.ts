@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
-import APP_TYPES from "../../../APP_TYPES";
-import IShellService from "../../shell/IShellService";
+import APP_TYPES from "../../../../APP_TYPES";
+import IShellService from "../../../shell/IShellService";
 import NPMFlags from "./NPMFlags";
 
 @injectable()
@@ -29,11 +29,7 @@ export default class NPMService
                 case "scope":
                     flags.push(`--${key} ${value}`)
                     break;
-                case "scripts": 
-                    continue;
-                default:
-                    console.error("Unkown flag specified")
-                    break;
+                default: continue; 
             }
         }
 
@@ -51,11 +47,27 @@ export default class NPMService
             {cwd: root}
         )
 
-        const packagePath = path.join(root, "package.json");
-        const currentModule: unknown = JSON.parse(readFileSync(packagePath).toString("utf8"))
-        if(currentModule && typeof currentModule === "object")
+        if(options?.scripts)
         {
-            writeFileSync(packagePath, JSON.stringify({... currentModule, scripts: options?.scripts}, null, 4))
+            console.log("Injecting scripts into package.json")
+            const packagePath = path.join(root, "package.json");
+            const currentModule: unknown = JSON.parse(readFileSync(packagePath).toString("utf8"))
+            if(currentModule && typeof currentModule === "object")
+            {
+                writeFileSync(packagePath, JSON.stringify({... currentModule, scripts: options?.scripts}, null, 4))
+            }  
+        }
+
+        if(options?.dependencies)
+        {
+            console.log("Installing dependencies")
+            await this.installDependency(root, ... options.dependencies)
+        }
+
+        if(options?.devDependencies)
+        {
+            console.log("Installing development dependencies")
+            await this.installDevDependency(root, ... options.devDependencies)
         }
     }
 

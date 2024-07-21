@@ -5,8 +5,10 @@ type NPMFlags = {
     "init-license"?: string,
     "init-module"?: string,
     "init-version"?: string,
-    "scope"?: string,
-    scripts: {[key: string]: string}
+    scope?: string,
+    scripts?: {[key: string]: string},
+    dependencies?: string[],
+    devDependencies?: string[];
 }
 
 export default NPMFlags;

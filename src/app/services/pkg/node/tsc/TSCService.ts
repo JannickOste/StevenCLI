@@ -1,8 +1,10 @@
 import { inject, injectable } from "inversify";
 import { TSCFlags } from "./TSCFlags";
-import APP_TYPES from "../../../APP_TYPES";
-import IShellService from "../../shell/IShellService";
+import APP_TYPES from "../../../../APP_TYPES";
+import IShellService from "../../../shell/IShellService";
 import ITSCService from "./ITSCService";
+import * as fs from "fs"
+import path from "path";
 
 @injectable()
 export default class TSCService implements ITSCService
@@ -137,7 +139,27 @@ export default class TSCService implements ITSCService
     async initialize(root: string, options?: TSCFlags) {
         const flags = options ? this.buildFlags(options) : "";
         
-        return await this.shellService.exec(`tsc --init ${flags}`, {cwd: root});
+        await this.shellService.exec(`tsc --init ${flags}`, {cwd: root});
+
+        console.log("Generating source barrelfile")
+        if(options?.rootDir)
+        {
+            const sourceRoot = path.join(root, options.rootDir);
+
+            fs.mkdirSync(sourceRoot)
+            fs.writeFileSync(path.join(sourceRoot, "index.ts"), "")
+        }
+
+        return Promise.resolve();
+    }
+
+    async initializeGitignore(root: string) 
+    {
+        console.log("Fetching gitignore file from official microsoft repository.")
+        fs.writeFileSync(
+            path.join(root, ".gitignore"), 
+            await (await fetch("https://raw.githubusercontent.com/microsoft/TypeScript/main/.gitignore", {method: "GET"})).text()
+        )
     }
 
     async build(root: string, options?: TSCFlags) {
