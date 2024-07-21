@@ -1,11 +1,11 @@
 import { inject } from "inversify";
-import { INodePackageConfiguration } from "../../../NodeLibraryInitalizerFactory";
 import * as fs from "fs"
 import path from "path";
 import APP_TYPES from "../../../../../../APP_TYPES";
 import IShellService from "../../../../../shell/IShellService";
 import ANodeDependencyIntializer from "../ANodeDependencyIntializer";
 import CoreApplicationError from "../../../../../../../core/domain/errors/CoreApplicationError";
+import ANodePackageConfiguration from "../../../ANodePackageConfiguration";
 
 
 export default class ESLintDependencyInitializer extends ANodeDependencyIntializer
@@ -37,9 +37,9 @@ export default class ESLintDependencyInitializer extends ANodeDependencyIntializ
         }
     }
 
-    async initialize(root: string, configuration: INodePackageConfiguration) 
+    async initialize(root: string, configuration: ANodePackageConfiguration) 
     { 
-        const languageType = this.hasDevDependency(configuration, "typescript-eslint") ? "typescript" : "javascript";
+        const languageType = configuration.hasDevDependency("typescript-eslint") ? "typescript" : "javascript";
         const configurationTemplateRoot = path.join(__dirname, languageType);
         if(!fs.existsSync(configurationTemplateRoot))
         {

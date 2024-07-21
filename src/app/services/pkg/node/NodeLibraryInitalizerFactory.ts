@@ -1,18 +1,12 @@
 import IShellService from "../../shell/IShellService";
 import ITSCService from "./tsc/ITSCService";
 import INPMService from "./npm/INPMService";
-import { TSCFlags } from "./tsc/TSCFlags";
-import NPMFlags from "./npm/NPMFlags";
 import { inject, injectable, multiInject } from "inversify";
 import APP_TYPES from "../../../APP_TYPES";
 import NodeLibraryInitalizer from "./NodeLibraryInitializer";
 import ANodeDependencyIntializer from "./initializers/dependencies/ANodeDependencyIntializer";
+import ANodePackageConfiguration from "./ANodePackageConfiguration";
 
-export interface INodePackageConfiguration {
-    gitRepository?: string;
-    tscConfig: TSCFlags; 
-    npmConfig: NPMFlags;
-}
 
 @injectable()
 export default class NodeLibraryInitalizerFactory
@@ -27,7 +21,7 @@ export default class NodeLibraryInitalizerFactory
     }
     
     public async create(
-        configuration: INodePackageConfiguration
+        configuration: ANodePackageConfiguration
     )
     {
         return new NodeLibraryInitalizer(

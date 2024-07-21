@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { INodePackageConfiguration } from "../../NodeLibraryInitalizerFactory";
+import ANodePackageConfiguration from "../../ANodePackageConfiguration";
 
 @injectable()
 export default abstract class ANodeDependencyIntializer  
@@ -7,21 +7,5 @@ export default abstract class ANodeDependencyIntializer
     public abstract package_name: string;
     public abstract package_type: "production" | "development"
 
-    abstract initialize(root: string, configuration: INodePackageConfiguration): Promise<void>;
-
-    //TODO: DUPLICATE FIX THIS BAD BAD BAD
-    protected hasDependency(configuration: INodePackageConfiguration, ... options: string[]) 
-    {
-        return (configuration.npmConfig.dependencies ?? []).find(dependency => {
-            return options.find((searchName) => dependency.startsWith(searchName)) !== undefined
-        }) !== undefined;
-    }
-
-    protected hasDevDependency(configuration: INodePackageConfiguration, ... options: string[]) 
-    {
-        return (configuration.npmConfig.devDependencies ?? []).find(dependency => {
-            return options.find((searchName) => dependency.startsWith(searchName)) !== undefined
-        }) !== undefined;
-    }
-
+    abstract initialize(root: string, configuration: ANodePackageConfiguration): Promise<void>;
 }

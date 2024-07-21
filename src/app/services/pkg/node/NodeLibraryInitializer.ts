@@ -2,34 +2,20 @@ import * as fs from "fs"
 import IShellService from "../../shell/IShellService";
 import ITSCService from "./tsc/ITSCService";
 import INPMService from "./npm/INPMService";
-import { INodePackageConfiguration } from "./NodeLibraryInitalizerFactory";
 import ANodeDependencyIntializer from "./initializers/dependencies/ANodeDependencyIntializer";
+import ANodePackageConfiguration from "./ANodePackageConfiguration";
 
 
 export default class NodeLibraryInitalizer
 {
     constructor(
-        private readonly configuration: INodePackageConfiguration,
+        private readonly configuration: ANodePackageConfiguration,
         private readonly dependencyInitializers: ANodeDependencyIntializer[],
         private readonly shellService: IShellService,
         private readonly tscService: ITSCService,
         private readonly npmService: INPMService
     ) {
 
-    }
-
-    private hasDependency(... options: string[]) 
-    {
-        return (this.configuration.npmConfig.dependencies ?? []).find(dependency => {
-            return options.find((searchName) => dependency.startsWith(searchName)) !== undefined
-        }) !== undefined;
-    }
-
-    private hasDevDependency(... options: string[]) 
-    {
-        return (this.configuration.npmConfig.devDependencies ?? []).find(dependency => {
-            return options.find((searchName) => dependency.startsWith(searchName)) !== undefined
-        }) !== undefined;
     }
 
     // TODO Add yarn switch between npm/yarn
@@ -54,8 +40,8 @@ export default class NodeLibraryInitalizer
             let hasPackage: boolean = false; 
             switch(initializer.package_type)
             {
-                case "production": hasPackage = this.hasDependency(initializer.package_name); break; 
-                case "development": hasPackage = this.hasDevDependency(initializer.package_name); break; 
+                case "production": hasPackage = this.configuration.hasDependency(initializer.package_name); break; 
+                case "development": hasPackage = this.configuration.hasDevDependency(initializer.package_name); break; 
             }
             
             console.log(`${initializer.package_name}: ${hasPackage}`)
@@ -98,7 +84,7 @@ export default class NodeLibraryInitalizer
                 console.log("Adding repository URL as origin")
                 await this.shellService.exec(`git remote add origin ${this.configuration.gitRepository}`, { cwd: projectRoot });
 
-                if(this.hasDevDependency("@semantic-release"))
+                if(this.configuration.hasDevDependency("@semantic-release"))
                 {
                     console.log("Semantic release detected")
                     console.log("Tagging git to version 0.0.0 and pushing tag")

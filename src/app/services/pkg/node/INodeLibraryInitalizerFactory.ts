@@ -1,6 +1,6 @@
-import { INodePackageConfiguration } from "./NodeLibraryInitalizerFactory";
+import ANodePackageConfiguration from "./ANodePackageConfiguration";
 import NodeLibraryInitializer from "./NodeLibraryInitializer";
 
 export interface INodeLibraryInitializerFactory {
-    create(configuration: INodePackageConfiguration): Promise<NodeLibraryInitializer>;
+    create(configuration: ANodePackageConfiguration): Promise<NodeLibraryInitializer>;
 }
