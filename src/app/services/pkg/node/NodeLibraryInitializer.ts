@@ -57,10 +57,12 @@ export default class NodeLibraryInitalizer
                 case "production": hasPackage = this.hasDependency(initializer.package_name); break; 
                 case "development": hasPackage = this.hasDevDependency(initializer.package_name); break; 
             }
-
+            
+            console.log(`${initializer.package_name}: ${hasPackage}`)
             if(hasPackage)
             {
-                await initializer.initialize(projectRoot, this.configuration)
+                console.log(`Initializing node dependency: ${initializer.package_name}`)
+                await initializer.initialize(projectRoot, this.configuration);
             }
         }
     }
@@ -90,15 +92,19 @@ export default class NodeLibraryInitalizer
             console.log(`Adding all structure files to git and adding default "Initial commit" message.`)
             console.log(await this.shellService.exec(`git add . && git commit -m "chore: Initial commit" -n`, { cwd: projectRoot }))
 
-            console.log("(if do not wish to initialize the remote, press enter to continue.)");
-            const repo = await this.shellService.prompt("Git repository URL?: ");
-            if (repo.length) {
+            // TODO: Move, cleanup, i don't know will see
+            if (this.configuration.gitRepository && this.configuration.gitRepository.length) 
+            {
                 console.log("Adding repository URL as origin")
-                await this.shellService.exec(`git remote add origin ${repo}`, { cwd: projectRoot });
+                await this.shellService.exec(`git remote add origin ${this.configuration.gitRepository}`, { cwd: projectRoot });
 
-                console.log("Tagging git to version 0.0.0 and pushing tag")
-                await this.shellService.exec(`git tag v0.0.0`, { cwd: projectRoot });
-                await this.shellService.exec(`git push origin v0.0.0`, { cwd: projectRoot });
+                if(this.hasDevDependency("@semantic-release"))
+                {
+                    console.log("Semantic release detected")
+                    console.log("Tagging git to version 0.0.0 and pushing tag")
+                    await this.shellService.exec(`git tag v0.0.0`, { cwd: projectRoot });
+                    await this.shellService.exec(`git push origin v0.0.0`, { cwd: projectRoot });
+                }
 
                 console.log("Pushing HEAD to origin")
                 console.log(await this.shellService.exec(`git push -u origin HEAD`, { cwd: projectRoot }));

@@ -9,6 +9,7 @@ import NodeLibraryInitalizer from "./NodeLibraryInitializer";
 import ANodeDependencyIntializer from "./initializers/dependencies/ANodeDependencyIntializer";
 
 export interface INodePackageConfiguration {
+    gitRepository?: string;
     tscConfig: TSCFlags; 
     npmConfig: NPMFlags;
 }
