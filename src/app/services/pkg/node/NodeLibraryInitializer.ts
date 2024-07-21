@@ -4,6 +4,7 @@ import ITSCService from "./tsc/ITSCService";
 import INPMService from "./npm/INPMService";
 import ANodeDependencyIntializer from "./initializers/dependencies/ANodeDependencyIntializer";
 import ANodePackageConfiguration from "./ANodePackageConfiguration";
+import IGitService from "../../git/IGitService";
 
 
 export default class NodeLibraryInitalizer
@@ -11,6 +12,7 @@ export default class NodeLibraryInitalizer
     constructor(
         private readonly configuration: ANodePackageConfiguration,
         private readonly dependencyInitializers: ANodeDependencyIntializer[],
+        private readonly gitService: IGitService,
         private readonly shellService: IShellService,
         private readonly tscService: ITSCService,
         private readonly npmService: INPMService
@@ -44,7 +46,6 @@ export default class NodeLibraryInitalizer
                 case "development": hasPackage = this.configuration.hasDevDependency(initializer.package_name); break; 
             }
             
-            console.log(`${initializer.package_name}: ${hasPackage}`)
             if(hasPackage)
             {
                 console.log(`Initializing node dependency: ${initializer.package_name}`)
@@ -70,30 +71,30 @@ export default class NodeLibraryInitalizer
             await this.initializeConfiguration(projectRoot)
 
             console.log("Initializing git...");
-            console.log((await this.shellService.exec(`git init && git branch -m main`, { cwd: projectRoot })).toString("utf8").trim());
-            
+            console.log(await this.gitService.initializeRepo(projectRoot))
+
             console.log("Initializing dependencies")
             await this.initializeDependencies(projectRoot)
             
             console.log(`Adding all structure files to git and adding default "Initial commit" message.`)
-            console.log(await this.shellService.exec(`git add . && git commit -m "chore: Initial commit" -n`, { cwd: projectRoot }))
+            console.log(await this.gitService.addFile(projectRoot, "."))
+            console.log(await this.gitService.commitMessage(projectRoot, "chore: Initial commit"))
 
-            // TODO: Move, cleanup, i don't know will see
             if (this.configuration.gitRepository && this.configuration.gitRepository.length) 
             {
                 console.log("Adding repository URL as origin")
-                await this.shellService.exec(`git remote add origin ${this.configuration.gitRepository}`, { cwd: projectRoot });
+                console.log(await this.gitService.addRemote(projectRoot, "origin", this.configuration.gitRepository))
 
+                // TODO: Move, cleanup, i don't know will see
                 if(this.configuration.hasDevDependency("@semantic-release"))
                 {
                     console.log("Semantic release detected")
                     console.log("Tagging git to version 0.0.0 and pushing tag")
-                    await this.shellService.exec(`git tag v0.0.0`, { cwd: projectRoot });
-                    await this.shellService.exec(`git push origin v0.0.0`, { cwd: projectRoot });
+                    console.log(await this.gitService.tagAndPush(projectRoot, "origin", "v0.0.0"))
                 }
 
                 console.log("Pushing HEAD to origin")
-                console.log(await this.shellService.exec(`git push -u origin HEAD`, { cwd: projectRoot }));
+                console.log(await this.gitService.pushToRemote(projectRoot, "origin", 'HEAD'))
             }
     
             console.log("Project generated successfully! Have fun coding :)");
