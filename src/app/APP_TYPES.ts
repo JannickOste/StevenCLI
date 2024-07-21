@@ -6,8 +6,12 @@ export default {
             INPMService: Symbol.for("APP::SERVICES::PACKAGE_MANAGER::INPMService"),
             Node: {
                 IDependencyInitializers: Symbol.for("APP::SERVICES::PACKAGE_MANAGER::NODE::DependencyInitializers"),
+            },
+            Git: {
+                IGitService: Symbol.for("APP::SERVICES::PACKAGE_MANAGER::VERSION_MANAGER::IGitService"),
             }
-        }
+        },
+
     },
     Factories: {
         Node:

@@ -14,6 +14,8 @@ import NodeLibraryInitalizerFactory from "./services/pkg/node/NodeLibraryInitali
 import ANodeDependencyIntializer from "./services/pkg/node/initializers/dependencies/ANodeDependencyIntializer";
 import HuskyDependencyInitializer from "./services/pkg/node/initializers/dependencies/husky/HuskyDependencyIntializer";
 import ESLintDependencyInitializer from "./services/pkg/node/initializers/dependencies/eslint/ESLintDependencyInitializer";
+import IGitService from "./services/git/IGitService";
+import { GitService } from "./services/git/GitService";
 
 @injectable()
 export default class AppStartup implements IStartup 
@@ -28,6 +30,7 @@ export default class AppStartup implements IStartup
         this.container.bind<IShellService>(APP_TYPES.Services.IShellService).to(ShellService)
         this.container.bind<ITSCService>(APP_TYPES.Services.Pkg.ITSCService).to(TSCService)
         this.container.bind<INPMService>(APP_TYPES.Services.Pkg.INPMService).to(NPMService)
+        this.container.bind<IGitService>(APP_TYPES.Services.Pkg.Git.IGitService).to(GitService)
 
         this.container.bind<INodeLibraryInitializerFactory>(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory).to(NodeLibraryInitalizerFactory)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(HuskyDependencyInitializer)
