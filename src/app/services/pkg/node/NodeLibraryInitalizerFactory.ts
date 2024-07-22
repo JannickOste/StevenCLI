@@ -15,8 +15,8 @@ export default class NodeLibraryInitalizerFactory
     constructor(
         @multiInject(APP_TYPES.Services.Pkg.Node.IDependencyInitializers) private readonly dependencyInitializers: ANodeDependencyIntializer[],
         @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService,
-        @inject(APP_TYPES.Services.Pkg.ITSCService) private readonly tscService: ITSCService,
-        @inject(APP_TYPES.Services.Pkg.INPMService) private readonly npmService: INPMService,
+        @inject(APP_TYPES.Services.Pkg.Node.ITSCService) private readonly tscService: ITSCService,
+        @inject(APP_TYPES.Services.Pkg.Node.INPMService) private readonly npmService: INPMService,
         @inject(APP_TYPES.Services.Pkg.Git.IGitService) private readonly gitService: IGitService
     ) {
 

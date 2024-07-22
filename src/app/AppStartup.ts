@@ -28,8 +28,8 @@ export default class AppStartup implements IStartup
 
     async registerServices(): Promise<void> {
         this.container.bind<IShellService>(APP_TYPES.Services.IShellService).to(ShellService)
-        this.container.bind<ITSCService>(APP_TYPES.Services.Pkg.ITSCService).to(TSCService)
-        this.container.bind<INPMService>(APP_TYPES.Services.Pkg.INPMService).to(NPMService)
+        this.container.bind<ITSCService>(APP_TYPES.Services.Pkg.Node.ITSCService).to(TSCService)
+        this.container.bind<INPMService>(APP_TYPES.Services.Pkg.Node.INPMService).to(NPMService)
         this.container.bind<IGitService>(APP_TYPES.Services.Pkg.Git.IGitService).to(GitService)
 
         this.container.bind<INodeLibraryInitializerFactory>(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory).to(NodeLibraryInitalizerFactory)
