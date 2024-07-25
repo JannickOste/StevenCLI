@@ -16,6 +16,7 @@ import HuskyDependencyInitializer from "./services/pkg/node/initializers/depende
 import ESLintDependencyInitializer from "./services/pkg/node/initializers/dependencies/eslint/ESLintDependencyInitializer";
 import IGitService from "./services/git/IGitService";
 import { GitService } from "./services/git/GitService";
+import SemanticReleaseDependencyInitializer from "./services/pkg/node/initializers/dependencies/semantic-release_github/SemanticReleaseDependencyInitializer";
 
 @injectable()
 export default class AppStartup implements IStartup 
@@ -35,6 +36,7 @@ export default class AppStartup implements IStartup
         this.container.bind<INodeLibraryInitializerFactory>(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory).to(NodeLibraryInitalizerFactory)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(HuskyDependencyInitializer)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(ESLintDependencyInitializer)
+        this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(SemanticReleaseDependencyInitializer)
     }
 
     async configureServices(): Promise<void> {
