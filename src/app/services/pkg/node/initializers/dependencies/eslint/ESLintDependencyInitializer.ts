@@ -19,24 +19,6 @@ export default class ESLintDependencyInitializer extends ANodeDependencyIntializ
         super();
     }
 
-    transferConfigurationFiles(root: string, to: string)
-    {
-        for(const dirent of fs.readdirSync(root, {withFileTypes: true}))
-        {
-            if(dirent.isDirectory())
-            {
-                this.transferConfigurationFiles(path.join(root, dirent.name), path.join(to, dirent.name))
-            }
-            if(dirent.isFile())
-            {
-                fs.copyFileSync(
-                    path.join(root, dirent.name), 
-                    path.join(to, dirent.name.replace(/(\.tpl)$/, ""))
-                )
-            }
-        }
-    }
-
     async initialize(root: string, configuration: ANodePackageConfiguration) 
     { 
         const languageType = configuration.hasDevDependency("typescript-eslint") ? "typescript" : "javascript";
@@ -46,6 +28,6 @@ export default class ESLintDependencyInitializer extends ANodeDependencyIntializ
             throw new CoreApplicationError(`No configuration files found for linter with language: ${languageType}`)
         }
 
-        this.transferConfigurationFiles(configurationTemplateRoot, root)
+        this.copyFilesRecursive(configurationTemplateRoot, root)
     }
 }
