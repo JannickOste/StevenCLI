@@ -147,7 +147,11 @@ export default class TSCService implements ITSCService
             const sourceRoot = path.join(root, options.rootDir);
 
             fs.mkdirSync(sourceRoot)
-            fs.writeFileSync(path.join(sourceRoot, "index.ts"), "")
+            const barrelFilepath = path.join(sourceRoot, "index.ts");
+            if(!fs.existsSync(barrelFilepath))
+            {
+                fs.writeFileSync(barrelFilepath, "")
+            }
         }
 
         return Promise.resolve();
