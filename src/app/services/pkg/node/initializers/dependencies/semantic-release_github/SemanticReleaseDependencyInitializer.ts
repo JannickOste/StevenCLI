@@ -4,6 +4,7 @@ import APP_TYPES from "../../../../../../APP_TYPES";
 import IShellService from "../../../../../shell/IShellService";
 import ANodeDependencyIntializer from "../ANodeDependencyIntializer";
 import ANodePackageConfiguration from "../../../ANodePackageConfiguration";
+import { IFileService } from "../../../../../IFileService";
 
 
 export default class SemanticReleaseDependencyInitializer extends ANodeDependencyIntializer
@@ -12,7 +13,8 @@ export default class SemanticReleaseDependencyInitializer extends ANodeDependenc
     public package_type: "production" | "development" = "development"
 
     constructor(
-        @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService
+        @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService,
+        @inject(APP_TYPES.Services.File.IFileService) private readonly fileService: IFileService
     ) {
         super();
     }
@@ -31,10 +33,14 @@ export default class SemanticReleaseDependencyInitializer extends ANodeDependenc
         {
             throw new Error(`Missing dev dependencies found (${missingDependencies.join(", ")})`)
         }
-        
-        this.copyFilesRecursive(
-            path.join(__dirname, "template"), 
-            root
-        )
+
+        this.fileService.copyFiles(
+            path.join(__dirname, "template"),
+            root, 
+            {
+                recursive: true, 
+                formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
+            }
+        );
     }
 }

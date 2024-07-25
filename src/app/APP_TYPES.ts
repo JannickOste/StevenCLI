@@ -11,7 +11,9 @@ export default {
                 IGitService: Symbol.for("APP::SERVICES::PACKAGE_MANAGER::VERSION_MANAGER::IGitService"),
             }
         },
-
+        File: {
+            IFileService: Symbol.for('APP::SERVICES::FILE::IFileService')
+        }
     },
     Factories: {
         Node:

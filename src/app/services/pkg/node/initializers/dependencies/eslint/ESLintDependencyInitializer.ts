@@ -6,6 +6,7 @@ import IShellService from "../../../../../shell/IShellService";
 import ANodeDependencyIntializer from "../ANodeDependencyIntializer";
 import CoreApplicationError from "../../../../../../../core/domain/errors/CoreApplicationError";
 import ANodePackageConfiguration from "../../../ANodePackageConfiguration";
+import { IFileService } from "../../../../../IFileService";
 
 
 export default class ESLintDependencyInitializer extends ANodeDependencyIntializer
@@ -14,7 +15,8 @@ export default class ESLintDependencyInitializer extends ANodeDependencyIntializ
     public package_type: "production" | "development" = "development"
 
     constructor(
-        @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService
+        @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService,
+        @inject(APP_TYPES.Services.File.IFileService) private readonly fileService: IFileService
     ) {
         super();
     }
@@ -28,6 +30,13 @@ export default class ESLintDependencyInitializer extends ANodeDependencyIntializ
             throw new CoreApplicationError(`No configuration files found for linter with language: ${languageType}`)
         }
 
-        this.copyFilesRecursive(configurationTemplateRoot, root)
+        this.fileService.copyFiles(
+            configurationTemplateRoot, 
+            root, 
+            {
+                recursive: true, 
+                formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
+            }
+        );
     }
 }
