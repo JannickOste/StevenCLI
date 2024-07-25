@@ -5,11 +5,11 @@ import { cwd } from "process";
 import CommandDecorator from "../../../../cli/domain/models/commands/decorators/Command";
 import ICommand from "../../../../cli/domain/models/commands/ICommand";
 import APP_TYPES from "../../../APP_TYPES";
-import IShellService from "../../../services/shell/IShellService";
-import { INodeLibraryInitializerFactory } from "../../../services/pkg/node/INodeLibraryInitalizerFactory";
+import IShellService from "../../../domain/services/shell/IShellService";
 import * as fs from "fs"
-import ANodePackageConfiguration from "../../../services/pkg/node/ANodePackageConfiguration";
 import TypescriptPackageConfiguration from "./TypescriptPackageConfiguration";
+import { INodeLibraryInitializerFactory } from "../../../domain/factories/pkg/node/initializers/INodeLibraryInitalizerFactory";
+import ANodePackageConfiguration from "../../../domain/models/pkg/node/ANodePackageConfiguration";
 
 const TYPESCRIPT_PACKAGE_NAME_PREFIX = "[package_name]"
 const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
