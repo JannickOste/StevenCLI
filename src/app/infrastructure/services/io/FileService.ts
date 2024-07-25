@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import path from "path";
 import { injectable } from "inversify";
-import { IOOptions } from "./IOOptions";
+import { IOOptions } from "../../../domain/models/io/IOOptions";
 import { IFileService } from "../../../domain/services/io/IFileService";
 import CoreApplicationError from "../../../../core/domain/errors/CoreApplicationError";
 
