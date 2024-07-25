@@ -14,7 +14,6 @@ export default class TypescriptPackageConfiguration extends ANodePackageConfigur
                 "lint": "eslint ."
             },
             dependencies: [
-                "inversify",
                 "reflect-metadata"
             ],
             devDependencies: [
