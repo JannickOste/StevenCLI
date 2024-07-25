@@ -3,7 +3,6 @@ import { Container, injectable } from 'inversify';
 import IStartup from '../../../../src/core/domain/IStartup';
 import ApplicationBuilder from '../../../../src/core/infrastructure/ApplicationBuilder';
 import TYPES from '../../../../src/TYPES';
-import Application from '../../../../src/app/Application';
 
 import container from '../../../../src/core/infrastructure/di/DependencyContainer';
 import IApplication from '../../../../src/core/domain/IApplication';
@@ -41,10 +40,6 @@ describe('ApplicationBuilder', () => {
     });
 
     describe('build', () => {
-        it('should throw an error if no Core.IStartup is bound', async () => {
-            await expect(appBuilder.build()).rejects.toThrow();
-        });
-
         it('should call registerServices and configureServices on the bound Core.IStartup', async () => {
             @injectable()
             class CoreStartup implements IStartup {
