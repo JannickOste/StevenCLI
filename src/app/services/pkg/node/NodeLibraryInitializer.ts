@@ -96,9 +96,6 @@ export default class NodeLibraryInitalizer
                 console.log("Pushing HEAD to origin")
                 console.log(await this.gitService.pushToRemote(projectRoot, "origin", 'HEAD'))
             }
-    
-            console.log("Project generated successfully! Have fun coding :)");
-    
         } catch (error) {
             console.error("An error occurred:", error);
         }
