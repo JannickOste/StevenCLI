@@ -5,8 +5,8 @@ import EventManager from "../../../core/infrastructure/managers/EventManager"
 import ICommand from "../../../cli/domain/models/commands/ICommand"
 import CommandHelpEvent from "../../../cli/infrastructure/events/CommandHelpEvent"
 import ICommandConstructor from "../../../cli/domain/models/commands/ICommandConstructor"
-import CreateTypescriptPackageCommand from "./typescript"
-import CreateTypescriptDIPackageCommand from "./typescript-di"
+import CreateTypescriptPackageCommand from "./typescript/plain"
+import CreateTypescriptDIPackageCommand from "./typescript/di"
 
 @CommandDecorator({
     name: "create-package", 

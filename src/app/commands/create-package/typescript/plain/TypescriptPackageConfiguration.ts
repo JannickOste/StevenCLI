@@ -1,6 +1,6 @@
-import ANodePackageConfiguration from "../../../domain/models/pkg/node/ANodePackageConfiguration";
-import NPMFlags from "../../../domain/services/pkg/node/npm/NPMFlags";
-import { TSCFlags } from "../../../domain/services/pkg/node/tsc/TSCFlags";
+import ANodePackageConfiguration from "../../../../domain/models/pkg/node/ANodePackageConfiguration";
+import NPMFlags from "../../../../domain/services/pkg/node/npm/NPMFlags";
+import { TSCFlags } from "../../../../domain/services/pkg/node/tsc/TSCFlags";
 
 export default class TypescriptPackageConfiguration extends ANodePackageConfiguration 
 {

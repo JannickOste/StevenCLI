@@ -2,22 +2,22 @@
 import { inject } from "inversify";
 import path from "path";
 import { cwd } from "process";
-import CommandDecorator from "../../../../cli/domain/models/commands/decorators/Command";
-import ICommand from "../../../../cli/domain/models/commands/ICommand";
-import APP_TYPES from "../../../APP_TYPES";
+import CommandDecorator from "../../../../../cli/domain/models/commands/decorators/Command";
+import ICommand from "../../../../../cli/domain/models/commands/ICommand";
+import APP_TYPES from "../../../../APP_TYPES";
+import IShellService from "../../../../domain/services/shell/IShellService";
 import * as fs from "fs"
-import TypescriptDIPackageConfiguration from "./TypescriptDIPackageConfiguration";
-import { IFileService } from "../../../domain/services/io/IFileService";
-import { INodeLibraryInitializerFactory } from "../../../domain/factories/pkg/node/initializers/INodeLibraryInitalizerFactory";
-import ANodePackageConfiguration from "../../../domain/models/pkg/node/ANodePackageConfiguration";
+import TypescriptPackageConfiguration from "./TypescriptPackageConfiguration";
+import { INodeLibraryInitializerFactory } from "../../../../domain/factories/pkg/node/initializers/INodeLibraryInitalizerFactory";
+import ANodePackageConfiguration from "../../../../domain/models/pkg/node/ANodePackageConfiguration";
 
 const TYPESCRIPT_PACKAGE_NAME_PREFIX = "[package_name]"
 const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
 const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
 
 @CommandDecorator({
-    name: "typescript-di",
-    description: "Create a typescript package enviroment with semantic-release workflows for github and dependency injection.",
+    name: "typescript",
+    description: "Create a typescript package enviroment with semantic-release workflows for github",
     arguments: [
         {
             prefix: TYPESCRIPT_PACKAGE_NAME_PREFIX,
@@ -38,37 +38,24 @@ const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
         }
     ]
 })
-export default class CreateTypescriptDIPackageCommand implements ICommand 
+export default class CreateTypescriptPackageCommand implements ICommand 
 {
     private readonly configuration: ANodePackageConfiguration;
 
     constructor(
-        @inject(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory) private readonly packageInitializerFactory: INodeLibraryInitializerFactory,
-        @inject(APP_TYPES.Services.File.IFileService) private readonly fileService: IFileService,
+        @inject(APP_TYPES.Services.IShellService) private readonly shellService: IShellService,
+        @inject(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory) private readonly packageInitializerFactory: INodeLibraryInitializerFactory
     ) {
-        this.configuration = new TypescriptDIPackageConfiguration();
+        this.configuration = new TypescriptPackageConfiguration();
     }
 
     public async invoke(args: { [key: string]: unknown }) {
         this.configuration.gitRepository = `${args[TYPESCRIPT_GIT_REPOSITORY_PREFIX]}`
         const libraryInitializer = await this.packageInitializerFactory.create(this.configuration);
         const projectRoot = path.join(cwd(), `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
-        const templateRoot = path.join(__dirname, "template");
 
         try {
-
             await libraryInitializer.initialize(projectRoot, `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
-
-            console.log("Transfering source structure from template")
-            this.fileService.copyFiles(
-                templateRoot, 
-                projectRoot, {
-                    recursive: true, 
-                    formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
-                }
-            )
-
-            console.log("Project generated!")
         } catch (error) {
             console.error("An error occurred during initialization:", error);
             
