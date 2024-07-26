@@ -1,12 +1,9 @@
-import ANodePackageConfiguration from "../../../../../domain/models/pkg/node/ANodePackageConfiguration";
-import NPMFlags from "../../../../../domain/services/pkg/node/npm/NPMFlags";
-import { TSCFlags } from "../../../../../domain/services/pkg/node/tsc/TSCFlags";
+import NPMFlags from "../../../domain/services/pkg/node/npm/NPMFlags";
+import { TSCFlags } from "../../../domain/services/pkg/node/tsc/TSCFlags";
 
-export default class TypescriptDIPackageConfiguration extends ANodePackageConfiguration 
-{
-    constructor()
-    {
-        const npmConfig: NPMFlags = {
+const ProjectConfigurations: Record<string, {npmConfig: NPMFlags, tscConfig?: TSCFlags}> = {
+    global: { // Applied to all configurations
+        npmConfig: {
             "init-version": "0.0.0",
             scripts: {
                 "test": "jest --passWithNoTests",
@@ -14,7 +11,6 @@ export default class TypescriptDIPackageConfiguration extends ANodePackageConfig
                 "lint": "eslint ."
             },
             dependencies: [
-                "inversify",
                 "reflect-metadata"
             ],
             devDependencies: [
@@ -35,19 +31,24 @@ export default class TypescriptDIPackageConfiguration extends ANodePackageConfig
                 "typescript",
                 "typescript-eslint"
             ]
-        }
-
-        const tsConfig: TSCFlags =  {
-            experimentalDecorators: true,
+        },
+        tscConfig: {
             strict: true,
             noImplicitAny: true,
             outDir: "./dist",
             rootDir: "./src"
         }
-
-        super(
-            npmConfig,
-            tsConfig
-        )
+    },
+    di: {
+        npmConfig: {
+            dependencies: [
+                "inversify"
+            ]
+        },
+        tscConfig: {
+            experimentalDecorators: true
+        }
     }
 }
+
+export default ProjectConfigurations;

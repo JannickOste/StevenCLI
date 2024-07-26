@@ -5,15 +5,13 @@ import EventManager from "../../../core/infrastructure/managers/EventManager"
 import ICommand from "../../../cli/domain/models/commands/ICommand"
 import CommandHelpEvent from "../../../cli/infrastructure/events/CommandHelpEvent"
 import ICommandConstructor from "../../../cli/domain/models/commands/ICommandConstructor"
-import CreateTypescriptPackageCommand from "./typescript/plain"
-import CreateTypescriptDIPackageCommand from "./typescript/di"
+import CreateTypescriptPackageCommand from "./typescript"
 
 @CommandDecorator({
     name: "create-package", 
     description: "Create a package enviroment for your favorite coding languages.",
     children: [
         CreateTypescriptPackageCommand,
-        CreateTypescriptDIPackageCommand
     ],
 })
 export default class CreatePackageCommandGroup implements ICommand
