@@ -19,6 +19,8 @@ import { INodeLibraryInitializerFactory } from "../domain/factories/pkg/node/ini
 import ANodeDependencyIntializer from "../domain/models/pkg/node/initializers/ANodeDependencyIntializer";
 import FileService from "./services/io/FileService";
 import NodeLibraryInitalizerFactory from "./factories/pkg/node/NodeLibraryInitalizerFactory";
+import INodePackageConfigurationBuilder from "../domain/models/pkg/node/INodePackageConfigurationBuilder";
+import ANodePackageConfigurationBuilder from "./services/pkg/node/ANodePackageConfigurationBuilder";
 
 @injectable()
 export default class AppStartup implements IStartup 
@@ -35,6 +37,8 @@ export default class AppStartup implements IStartup
         this.container.bind<INPMService>(APP_TYPES.Services.Pkg.Node.INPMService).to(NPMService)
         this.container.bind<IGitService>(APP_TYPES.Services.Pkg.Git.IGitService).to(GitService)
         this.container.bind<IFileService>(APP_TYPES.Services.File.IFileService).to(FileService)
+
+        this.container.bind<INodePackageConfigurationBuilder>(APP_TYPES.Builders.Node.ANodePackageConfigurationBuilder).to(ANodePackageConfigurationBuilder)
 
         this.container.bind<INodeLibraryInitializerFactory>(APP_TYPES.Factories.Node.INodeLibraryInitializerFactory).to(NodeLibraryInitalizerFactory)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(HuskyDependencyInitializer)

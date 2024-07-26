@@ -20,5 +20,10 @@ export default {
         {
             INodeLibraryInitializerFactory: Symbol.for("APP::FACTORIES::NODE::NodeLibraryInitializer")
         }
+    },
+    Builders: {
+        Node: {
+            ANodePackageConfigurationBuilder: Symbol.for("APP::BUILDER;;NODE;;AnodePackageConfigurationBuilder")
+        }
     }
 }
