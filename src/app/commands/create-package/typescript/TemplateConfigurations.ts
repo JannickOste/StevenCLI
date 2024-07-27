@@ -41,6 +41,9 @@ const ProjectConfigurations: Record<string, {npmConfig: NPMFlags, tscConfig?: TS
     },
     di: {
         npmConfig: {
+            scripts: {
+                "start": "tsc && node ./dist"
+            },
             dependencies: [
                 "inversify"
             ]

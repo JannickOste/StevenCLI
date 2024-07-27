@@ -16,6 +16,13 @@ const TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX = "-t, --template"
 const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
 const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
 
+const selectItem = (items: unknown[]) => {
+    for(let i = 0; i < items.length; i++)
+    {
+        console.log(`[${i+1}]: ${items[i]}`)
+    }
+}
+
 @CommandDecorator({
     name: "typescript",
     description: "Create a typescript package enviroment with semantic-release workflows for github",

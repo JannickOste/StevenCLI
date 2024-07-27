@@ -3,7 +3,7 @@ import NPMFlags from "../../../../domain/services/pkg/node/npm/NPMFlags";
 import { TSCFlags } from "../../../../domain/services/pkg/node/tsc/TSCFlags";
 import ANodePackageConfiguration from "../../../../domain/models/pkg/node/ANodePackageConfiguration";
 import INodePackageConfigurationBuilder from "../../../../domain/models/pkg/node/INodePackageConfigurationBuilder";
-import { deepMerge } from "./deepMerge";
+import { deepMerge } from "../../../helpers/deepMerge";
 
 @injectable()
 export default class ANodePackageConfigurationBuilder implements INodePackageConfigurationBuilder {
