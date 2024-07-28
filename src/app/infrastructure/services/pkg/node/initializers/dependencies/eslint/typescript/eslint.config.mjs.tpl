@@ -32,7 +32,8 @@ export default tseslint.config(
       "@typescript-eslint/no-array-constructor": "error",
       "no-unused-vars": "off",
       '@typescript-eslint/no-unused-vars': 'error',
-      "no-undef": "off" 
+      "no-undef": "off",
+      "no-dupe-class-members": "off"
     },
   },
   {
