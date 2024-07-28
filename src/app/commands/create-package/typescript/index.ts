@@ -16,6 +16,9 @@ const TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX = "-t, --template"
 const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
 const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
 
+const templateRoot = path.join(__dirname, "templates");
+const templateNames = fs.readdirSync(templateRoot, {withFileTypes: true}).filter(v => v.isDirectory()).map(v => v.name);
+
 @CommandDecorator({
     name: "typescript",
     description: "Create a typescript package enviroment with semantic-release workflows for github",
@@ -63,14 +66,21 @@ export default class CreateTypescriptPackageCommand implements ICommand
         if(template in TemplateConfigurations)
         {
             this.configurationBuilder
-                    .updateNPMConfig(TemplateConfigurations[template].npmConfig)
-                    .updateTSCConfig(TemplateConfigurations[template].tscConfig ?? {})
+                    .updateNPMConfig(TemplateConfigurations[template]?.npmConfig ?? {})
+                    .updateTSCConfig(TemplateConfigurations[template]?.tscConfig ?? {})
         }
 
         return this.configurationBuilder.build();
     }
 
     public async invoke(args: { [key: string]: unknown }) {
+        const currentTemplateRoot = path.join(templateRoot, `${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
+
+        if(!fs.existsSync(currentTemplateRoot))
+        {
+            return console.error(`Template '${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}' not found, available options: ${templateNames.join(", ")}`)
+        }
+
         const configuration = this.buildConfiguration(`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
         configuration.gitRepository = `${args[TYPESCRIPT_GIT_REPOSITORY_PREFIX]}`
 
@@ -78,18 +88,14 @@ export default class CreateTypescriptPackageCommand implements ICommand
         const projectRoot = path.join(cwd(), `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
 
 
-        const templateRoot = path.join(__dirname, "templates", `${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`);
-        if(fs.existsSync(templateRoot))
-        {
-            console.log("Transfering source structure from template")
-            this.fileService.copyFiles(
-                templateRoot, 
-                projectRoot, {
-                    recursive: true, 
-                    formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
-                }
-            )
-        }
+        console.log("Transfering source structure from template")
+        this.fileService.copyFiles(
+            currentTemplateRoot, 
+            projectRoot, {
+                recursive: true, 
+                formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
+            }
+        )
 
         try {
             await libraryInitializer.initialize(projectRoot, `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`, true);
@@ -106,6 +112,6 @@ export default class CreateTypescriptPackageCommand implements ICommand
             }
         }
 
-        console.log("Project generated!")
+        return console.log("Project generated!")
     }
 }
