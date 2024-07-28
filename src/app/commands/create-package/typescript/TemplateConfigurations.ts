@@ -51,6 +51,26 @@ const ProjectConfigurations: Record<string, {npmConfig: NPMFlags, tscConfig?: TS
         tscConfig: {
             experimentalDecorators: true
         }
+    },
+    mvc: {
+        npmConfig: {
+            scripts: {
+                "start": "tsc && node ./dist"
+            },
+            devDependencies: [
+                "@types/express"
+            ],
+            dependencies: [
+                "inversify",
+                "typeorm",
+                "inversify-express-utils",
+                "express"
+            ]
+        },
+        tscConfig: {
+            experimentalDecorators: true,
+            emitDecoratorMetadata: true
+        }
     }
 }
 
