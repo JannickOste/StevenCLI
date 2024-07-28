@@ -77,20 +77,6 @@ export default class CreateTypescriptPackageCommand implements ICommand
         const libraryInitializer = await this.packageInitializerFactory.create(configuration);
         const projectRoot = path.join(cwd(), `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
 
-        try {
-            await libraryInitializer.initialize(projectRoot, `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
-        } catch (error) {
-            console.error("An error occurred during initialization:", error);
-            
-            if (fs.existsSync(projectRoot)) {
-                try {
-                    fs.rmSync(projectRoot, { recursive: true, force: true });
-                    console.log(`Removed project directory: ${projectRoot}`);
-                } catch (cleanupError) {
-                    console.error(`Failed to remove project directory: ${projectRoot}`, cleanupError);
-                }
-            }
-        }
 
         const templateRoot = path.join(__dirname, "templates", `${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`);
         if(fs.existsSync(templateRoot))
@@ -103,6 +89,21 @@ export default class CreateTypescriptPackageCommand implements ICommand
                     formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
                 }
             )
+        }
+
+        try {
+            await libraryInitializer.initialize(projectRoot, `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`, true);
+        } catch (error) {
+            console.error("An error occurred during initialization:", error);
+            
+            if (fs.existsSync(projectRoot)) {
+                try {
+                    fs.rmSync(projectRoot, { recursive: true, force: true });
+                    console.log(`Removed project directory: ${projectRoot}`);
+                } catch (cleanupError) {
+                    console.error(`Failed to remove project directory: ${projectRoot}`, cleanupError);
+                }
+            }
         }
 
         console.log("Project generated!")

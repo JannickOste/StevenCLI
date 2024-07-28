@@ -56,17 +56,20 @@ export default class NodeLibraryInitalizer
     
     public async initialize(
         projectRoot: string, 
-        projectName: string
+        projectName: string,
+        allowExistingPath: boolean
     )
     {
         try 
         {
             if (fs.existsSync(projectRoot)) {
-                console.error("Project root already exists...");
-                return;
-            }
-    
-            fs.mkdirSync(projectRoot);
+                if(!allowExistingPath)
+                {
+                    console.error("Project root already exists...");
+                    return;
+                }
+            } else fs.mkdirSync(projectRoot);
+
             console.log(`Creating package ${projectName}...`);        
             await this.initializeConfiguration(projectRoot)
 
