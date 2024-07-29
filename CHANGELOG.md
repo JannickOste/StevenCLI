@@ -1,3 +1,53 @@
+# [0.6.0](https://github.com/JannickOste/StevenCLI/compare/v0.5.0...v0.6.0) (2024-07-29)
+
+
+### Bug Fixes
+
+* ApplicationBuilder test fixed pre refactor ([4229c0f](https://github.com/JannickOste/StevenCLI/commit/4229c0f862e9227a9558f709ca148954e8e2b02c))
+* check added for template in typescript create package command ([640072b](https://github.com/JannickOste/StevenCLI/commit/640072b99bc059b904677e1d76dc726b5bfdb9f2))
+* commandHelpEvent visually improved, code is terrible, needs some serious fixing ([f604daa](https://github.com/JannickOste/StevenCLI/commit/f604daa412c37541aab3498e3288b66603e114bc))
+* linter rule for no dupe class members disabled,  required for overloads in mvc proxy ([c2a28a9](https://github.com/JannickOste/StevenCLI/commit/c2a28a96f56fc002238a3f1f803cc296230400d3))
+* node flags moved to propper folder and di added for initializers and factory ([6cd298d](https://github.com/JannickOste/StevenCLI/commit/6cd298d3d31c440095ce00a4afbe9f1651146a3c))
+* removed commandvaluetype from commandinfo for linter ([a8d83f6](https://github.com/JannickOste/StevenCLI/commit/a8d83f6761a30d4e320376e14cbfa1663e1e185d))
+* removed folder with git folder inside ([a8525f1](https://github.com/JannickOste/StevenCLI/commit/a8525f1ae4123daa7708155fcbd8b679a699cbcc))
+* template move is before node library initialization now, adds files to git as it should ([9c6a7d0](https://github.com/JannickOste/StevenCLI/commit/9c6a7d085d034cd3e2727d91fa65446342cc8315))
+* **TSCService:** check added for barrel files ([d874e19](https://github.com/JannickOste/StevenCLI/commit/d874e193846de55ddb5ef0e25888ebf1d5c2e1c4))
+* **TSCService:** check added for barrel files ([8b03f4a](https://github.com/JannickOste/StevenCLI/commit/8b03f4a8e52e4dbb10fd1ea6543bdb3c53b34ef5))
+
+
+### Features
+
+* **ANodeDependencyInitializer:** abstract base added for multi inject in node initializer ([7d23f33](https://github.com/JannickOste/StevenCLI/commit/7d23f33fa4e24370f7a17390f5708dbe68670e9b))
+* **ANodePackageConfigurationBuilder:** configuration builder added with merge helper for configuration updates ([26e825a](https://github.com/JannickOste/StevenCLI/commit/26e825ae0bb3340c7b4f1b7285182d205b6bdc6a))
+* **Command::TypescriptDI:** project generator command for typescript with inversify dependency injection added ([da10e09](https://github.com/JannickOste/StevenCLI/commit/da10e094d7dac1572de647bd81e2f209c4c6ec69))
+* **Command::Typescript:** typescript project generation command added ([4a5b22e](https://github.com/JannickOste/StevenCLI/commit/4a5b22ebe9585e139388a20d232fdacc95750c67))
+* CommandInfo value type, extracted to type for later use ([566cae5](https://github.com/JannickOste/StevenCLI/commit/566cae59addc82a7a2cec4aad6037122712f7168))
+* create package typescript mvc template added ([47dbbb4](https://github.com/JannickOste/StevenCLI/commit/47dbbb40495a3cc1c5f7ebf319814f928e07e08a))
+* **ESLintDependencyInitializer:** dependency initializer for typescript eslint, other languages still unsupported ([9d4c463](https://github.com/JannickOste/StevenCLI/commit/9d4c463d012d142748e2d08b212f6ebefdbfd073))
+* **FileService:** file service added, only has copy functionality atm ([d264481](https://github.com/JannickOste/StevenCLI/commit/d264481b8b0667c1b493c463bf8c2dfe7880d77d))
+* **GitService:** basic service added for git requests ([ab224e5](https://github.com/JannickOste/StevenCLI/commit/ab224e5021ab3932e75b8538521f0e3de3e80d34))
+* **HuskyDependencyInitializer:** added to setup pre-commit hooks ([24d4ba7](https://github.com/JannickOste/StevenCLI/commit/24d4ba71a4ba2d27e3bdb74345a71fbaadb35f65))
+* linter added to pre-commit ([207c21a](https://github.com/JannickOste/StevenCLI/commit/207c21a5668ff15d2d45b09c74735d6382425170))
+* **NodeLibraryInitalizer:** generalized installer added for NPM/TSC packages, yarn still unsupported ([349ed2f](https://github.com/JannickOste/StevenCLI/commit/349ed2f550478dcb652254a0a6b5f87e14c002e6))
+* **NodeLibraryInitializerFactory:** factory added to produce initializers with proper configuration ([d77b408](https://github.com/JannickOste/StevenCLI/commit/d77b4080061c0de16f9149c1eae0c4dc32d02f6e))
+* **NPMService:** service added for simple javascript package managment ([aca67c3](https://github.com/JannickOste/StevenCLI/commit/aca67c3338326c6a2d7cb8a2b97b7b27f77c33e6))
+* options added for templates, pre-release ([25c7f33](https://github.com/JannickOste/StevenCLI/commit/25c7f3356d6911e915dfc7b0af70592319a0543c))
+* options added to command arguments for clearer instructions ([d5e0342](https://github.com/JannickOste/StevenCLI/commit/d5e03427854befc8bee01573154bb0eaa5f655fe))
+* options check added to searchcommand validator ([9d12f4a](https://github.com/JannickOste/StevenCLI/commit/9d12f4a40b315ac281eac46326adf2a2d8df510e))
+* postpublish script added to allow for template transfer between source and build directory ([f864f00](https://github.com/JannickOste/StevenCLI/commit/f864f0085ac36ebb0b7b062f31d5a8b0a72f9d54))
+* **SemanticReleaseDependencyInitializer:** Semantic release initializer for github extension added ([1f08888](https://github.com/JannickOste/StevenCLI/commit/1f08888d2d91da906aa73a3dd1a8daa874fa481c))
+* **ShellService:** for command execution and CLI interaction added ([1c43fac](https://github.com/JannickOste/StevenCLI/commit/1c43fac2707172b3d1110af2becd02fddb9d1de0))
+* start script added to typescript di template ([81d8457](https://github.com/JannickOste/StevenCLI/commit/81d8457a956c3b155fc58d1de3969d59f3996f71))
+* **TSCService:** service base added for typescript initialization / compiling ([1f99a03](https://github.com/JannickOste/StevenCLI/commit/1f99a03ffce65927bf60605d014bb4619e94c91a))
+* typescript command reworked, uses configuration builder now ([be15c23](https://github.com/JannickOste/StevenCLI/commit/be15c2321c25a925f10d8ff58466da5f34f306fd))
+
+
+### Performance Improvements
+
+* ANodeDepenencyInitializer copy removed and replaced with file service copy ([2d80575](https://github.com/JannickOste/StevenCLI/commit/2d8057584f8055b338e99b74ec484fddacbe5866))
+* **Command::Typescript:** inversify removed from clean typescript source ([07b78fb](https://github.com/JannickOste/StevenCLI/commit/07b78fb13f1c396ad8b3c48313d21f8477b0e93d))
+* **example:** example command removed, will change this to an external repository ([2d060b9](https://github.com/JannickOste/StevenCLI/commit/2d060b9e7711543fc42a711393a2869a6b5003c7))
+
 # [0.5.0](https://github.com/JannickOste/StevenCLI/compare/v0.4.0...v0.5.0) (2024-07-18)
 
 
