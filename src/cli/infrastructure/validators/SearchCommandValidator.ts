@@ -66,6 +66,10 @@ export default class SearchCommandValidator implements ISearchCommandValidator
                 {
                     validationErrors.push(new InvalidParemeterError(`${argument.prefix} has no value`))
                 }
+                else if(Array.isArray(argument.options) && !argument.options.includes(foundSearchEntry.value))
+                {
+                    validationErrors.push(new InvalidParemeterError(`Option: ${foundSearchEntry.value} does not exist, available options: ${argument.options}`))
+                }
             })
         }
 
