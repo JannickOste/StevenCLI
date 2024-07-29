@@ -1,6 +1,6 @@
 {
   "name": "steven",
-  "version": "0.0.0",
+  "version": "0.6.0",
   "description": "A Domain driven CLI service to assist you with all your needs ",
   "main": "jest.config.js",
   "bin": {
