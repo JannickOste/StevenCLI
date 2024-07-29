@@ -38,7 +38,8 @@ const templateNames = fs.readdirSync(templateRoot, {withFileTypes: true}).filter
             prefix: TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX,
             description: "The typescript source template to use.",
             required: false,
-            default: "plain"
+            default: "plain",
+            options: templateNames
         },
         {
             prefix: TYPESCRIPT_GIT_REPOSITORY_PREFIX,
