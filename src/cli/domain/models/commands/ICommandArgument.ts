@@ -7,4 +7,5 @@ export default interface ICommandArgument
     default?: unknown; 
     required?: boolean;
     value?: CommandArgumentValueType;
+    options?: CommandArgumentValueType[]
 }
