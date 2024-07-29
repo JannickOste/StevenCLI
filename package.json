@@ -10,6 +10,7 @@
     "test": "jest --passWithNoTests",
     "publish": "tsc",
     "prepublish": "node sysadmin/publish/prepublish.mjs",
+    "postpublish": "node sysadmin/publish/postpublish.mjs",
     "lint": "eslint .",
     "prepare": "husky"
   },

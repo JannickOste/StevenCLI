@@ -1,8 +1,9 @@
+import Application from "../../app/infrastructure/Application";
 import TYPES from "../../TYPES";
 import IApplication from "../domain/IApplication";
 import IStartup from "../domain/IStartup";
 import container from "./di/DependencyContainer";
- 
+
  export default class ApplicationBuilder 
  { 
     
@@ -22,7 +23,7 @@ import container from "./di/DependencyContainer";
     }
 
     async build(
-        application: new(...args: any[]) => IApplication
+        application: new(...args: any[]) => IApplication = Application
     ): Promise<IApplication>
     {
         if(this.appStartupConstructor)
