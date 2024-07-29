@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import AppStartup from "./app/AppStartup";
+import Application from "./app/infrastructure/Application";
+import AppStartup from "./app/infrastructure/AppStartup";
 import IApplication from "./core/domain/IApplication";
-import Application from "./app/Application";
 import ApplicationBuilder from "./core/infrastructure/ApplicationBuilder";
 
 
