@@ -16,57 +16,73 @@ export default class CommandHelpEvent extends AAplicationEvent {
         super();
     }
 
+    private processObject(obj: object, depth: number = 1): string[] {
+        const lines: string[] = [];
+        const entries = Object.entries(obj);
+        const formatLine = (str: string) => ' '.repeat(depth * 2) + str;
+        const addLine = (...str: string[]) => lines.push(...str.map(value => formatLine(value)));
+    
+        for (let index = 0; index < entries.length; index++) {
+            let [key, value] = (entries[index] as [string, unknown]);
+            if (!value) continue;
+    
+            switch (typeof value) {
+                case "object":
+                    if (!Array.isArray(value)) {
+                        addLine(`${key}:`);
+                        addLine(...this.processObject(value as object, depth + 1));
+                    } else {
+                        if (!value.length || !value.find(v => Boolean(v))) continue;
+    
+                        if (!value.find(valueArrayItem => typeof valueArrayItem === "object")) {
+                            addLine(`${key}:`);
+                            addLine(...value.map(v => `- ${v}`));
+                        } else {
+                            depth += 2
+                            addLine(`${key}:`);
+                            value.forEach((item) => {
+                                if (typeof item === "object" && item) {
+                                    addLine(...this.processObject(item as object, depth + 2));
+                                    addLine(``);
+                                } else {
+                                    addLine(`- ${item}`);
+                                }
+    
+                            });
+                            depth -= 2
+                        }
+                    }
+                    break;
+                default:
+                    if (key === "name") {
+                        value = `${value}`.replace(/\//g, " ");
+                    }
+
+                    addLine(`${key}: ${value}`);
+                    break;
+            }
+    
+        }
+    
+        return lines;
+    }
+    
+
     // TODO: Disgusting, needs much better implementation
     private displayCommandObject(target: unknown) {
         const boxLine = (char: string, length: number) => char.repeat(length);
 
         const displayBox = (content: string[]) => {
-            const lineWidth = 50;
-            console.log(`┌${boxLine('─', lineWidth - 2)}┐`);
-            content.forEach(line => console.log(`│${line.padEnd(lineWidth - 2)}│`));
-            console.log(`└${boxLine('─', lineWidth - 2)}┘`);
+            const lineWidth = Math.max(... content.map(str => str.length));
+            console.log(`┌${boxLine('─', lineWidth + 2)}┐`);
+            content.forEach(line => console.log(`│${line.padEnd(lineWidth+2)}│`));
+            console.log(`└${boxLine('─', lineWidth + 2)}┘`);
         };
 
-        const processObject = (obj: object): string[] => {
-            const lines: string[] = [];
-            Object.entries(obj).forEach(([key, value], index, array) => {
-                if (typeof value === "object" && value !== null) {
-                    if (Array.isArray(value)) {
-                        if (key === 'options') {
-                            lines.push(` ${key}:`);
-                            value.forEach(item => lines.push(`  - ${item}`));
-                        } else {
-                            lines.push(` ${key}:`);
-                            value.forEach((item, idx) => {
-                                if (typeof item === "object" && item) {
-                                    lines.push(...processObject(item as object));
-                                } else {
-                                    lines.push(`  - ${item}`);
-                                }
-                                if (idx < `${value}`.length - 1) {
-                                    lines.push(`${boxLine('─', 48)}`);
-                                }
-                            });
-                        }
-                    } else {
-                        lines.push(` ${key}:`);
-                        lines.push(...processObject(value as object));
-                    }
-                } else {
-                    if (key === "name") {
-                        value = `${value}`.replace(/\//g, " ");
-                    }
-                    lines.push(` ${key}: ${value}`);
-                }
-                if (index < array.length - 1 && key !== 'options') {
-                    lines.push(`${boxLine('─', 48)}`);
-                }
-            });
-            return lines;
-        };
+
 
         if (typeof target === "object" && target !== null) {
-            const content = processObject(target);
+            const content = this.processObject(target);
             displayBox(content);
         } else {
             console.log(target);
