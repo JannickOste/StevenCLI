@@ -9,15 +9,19 @@ import * as fs from "fs"
 import { INodeLibraryInitializerFactory } from "../../../domain/factories/pkg/node/initializers/INodeLibraryInitalizerFactory";
 import INodePackageConfigurationBuilder from "../../../domain/models/pkg/node/INodePackageConfigurationBuilder";
 import { IFileService } from "../../../domain/services/io/IFileService";
-import TemplateConfigurations from "./TemplateConfigurations"
+import {load as yamlLoad} from "js-yaml"
+import ANodePackageConfiguration from "../../../domain/models/pkg/node/ANodePackageConfiguration";
 
 const TYPESCRIPT_PACKAGE_NAME_PREFIX = "[package_name]"
 const TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX = "-t, --template"
 const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
 const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
 
+const configRoot = path.join(__dirname, "config")
 const templateRoot = path.join(__dirname, "templates");
-const templateNames = Object.keys(TemplateConfigurations).filter(n => n !== "global")
+const templateNames = fs.readdirSync(configRoot, {withFileTypes: true}).filter(
+                            dirent => dirent.isFile() && path.extname(dirent.name) === ".yml"
+                        ).map(dirent => dirent.name.slice(0, -4));
 
 @CommandDecorator({
     name: "typescript",
@@ -60,16 +64,23 @@ export default class CreateTypescriptPackageCommand implements ICommand
 
     private buildConfiguration(template: string)
     {
-        this.configurationBuilder
-            .setNPMConfig( TemplateConfigurations.global.npmConfig)
-            .setTSCConfig(TemplateConfigurations.global.tscConfig ?? {})
+        const loadConfig = (name: string) => yamlLoad(
+            fs.readFileSync(path.join(configRoot, `${name}.yml`), "utf-8")
+        )
 
-        if(template in TemplateConfigurations)
+        const globalConfig = loadConfig("global") as ANodePackageConfiguration
+        this.configurationBuilder
+            .setNPMConfig( globalConfig?.npmConfig ?? {})
+            .setTSCConfig(globalConfig?.tscConfig ?? {})
+
+        const templateConfig = loadConfig(template) as ANodePackageConfiguration
+        if(templateConfig)
         {
             this.configurationBuilder
-                    .updateNPMConfig(TemplateConfigurations[template]?.npmConfig ?? {})
-                    .updateTSCConfig(TemplateConfigurations[template]?.tscConfig ?? {})
+                    .updateNPMConfig(templateConfig?.npmConfig ?? {})
+                    .updateTSCConfig(templateConfig?.tscConfig ?? {})
         }
+        
 
         return this.configurationBuilder.build();
     }
@@ -77,14 +88,13 @@ export default class CreateTypescriptPackageCommand implements ICommand
     public async invoke(args: { [key: string]: unknown }) {
         const currentTemplateRoot = path.join(templateRoot, `${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
 
-        if(!(TemplateConfigurations[`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`]))
+        if(!(templateNames.includes(`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)))
         {
             return console.error(`Template '${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}' not found, available options: ${templateNames.join(", ")}`)
         }
-        
+
         const configuration = this.buildConfiguration(`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
         configuration.gitRepository = `${args[TYPESCRIPT_GIT_REPOSITORY_PREFIX]}`
-
         const libraryInitializer = await this.packageInitializerFactory.create(configuration);
         const projectRoot = path.join(cwd(), `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
 

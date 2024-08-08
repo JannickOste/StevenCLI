@@ -37,8 +37,10 @@
     "typescript-eslint": "^7.15.0"
   },
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "glob": "^10.4.3",
     "inversify": "^6.0.2",
+    "js-yaml": "^4.1.0",
     "reflect-metadata": "^0.2.2"
   }
 }
