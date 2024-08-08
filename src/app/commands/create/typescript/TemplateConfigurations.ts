@@ -39,6 +39,10 @@ const ProjectConfigurations: Record<string, {npmConfig: NPMFlags, tscConfig?: TS
             rootDir: "./src"
         }
     },
+    plain: {
+        npmConfig: {},
+        tscConfig: {}
+    },
     di: {
         npmConfig: {
             scripts: {
@@ -71,7 +75,45 @@ const ProjectConfigurations: Record<string, {npmConfig: NPMFlags, tscConfig?: TS
             experimentalDecorators: true,
             emitDecoratorMetadata: true
         }
-    }
+    },
+    react: {
+        npmConfig: {
+            dependencies: [
+                "react",
+                "react-dom",
+                "autoprefixer",
+                "postcss-loader",
+                "tailwindcss",
+                "webpack",
+                "webpack-dev-server",
+            ],
+            devDependencies: [
+                "@types/react",
+                "@types/react-dom",
+                "css-loader",
+                "html-webpack-plugin",
+                "mini-css-extract-plugin",
+                "ts-loader",
+                "webpack-cli",
+            ],
+            scripts: {
+                "start": "webpack serve",
+                "build": "webpack"
+            }
+        },
+        tscConfig: {
+            target: "es2016",
+            skipLibCheck: true,
+            esModuleInterop: true,
+            forceConsistentCasingInFileNames: true,
+            noFallthroughCasesInSwitch: true,
+            module: "esnext",
+            moduleResolution: "node",
+            resolveJsonModule: true,
+            isolatedModules: true,
+            jsx: "react"
+        },
+    },
 }
 
 export default ProjectConfigurations;

@@ -6,12 +6,14 @@ import ICommand from "../../../cli/domain/models/commands/ICommand"
 import CommandHelpEvent from "../../../cli/infrastructure/events/CommandHelpEvent"
 import ICommandConstructor from "../../../cli/domain/models/commands/ICommandConstructor"
 import CreateTypescriptPackageCommand from "./typescript"
+import CreateDotnetPackageCommand from "./dotnet"
 
 @CommandDecorator({
-    name: "create-package", 
-    description: "Create a package enviroment for your favorite coding languages.",
+    name: "create", 
+    description: "Create an enviroment for your favorite coding languages.",
     children: [
         CreateTypescriptPackageCommand,
+        CreateDotnetPackageCommand
     ],
 })
 export default class CreatePackageCommandGroup implements ICommand

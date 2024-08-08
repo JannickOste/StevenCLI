@@ -17,7 +17,7 @@ const TYPESCRIPT_GIT_REPOSITORY_PREFIX = "-r, --repo, --repository"
 const TYPESCRIPT_SETUP_DEFAULT_PREFIX = "-y, --ignoreMissing"
 
 const templateRoot = path.join(__dirname, "templates");
-const templateNames = fs.readdirSync(templateRoot, {withFileTypes: true}).filter(v => v.isDirectory()).map(v => v.name);
+const templateNames = Object.keys(TemplateConfigurations).filter(n => n !== "global")
 
 @CommandDecorator({
     name: "typescript",
@@ -77,26 +77,28 @@ export default class CreateTypescriptPackageCommand implements ICommand
     public async invoke(args: { [key: string]: unknown }) {
         const currentTemplateRoot = path.join(templateRoot, `${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
 
-        if(!fs.existsSync(currentTemplateRoot))
+        if(!(TemplateConfigurations[`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`]))
         {
             return console.error(`Template '${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}' not found, available options: ${templateNames.join(", ")}`)
         }
-
+        
         const configuration = this.buildConfiguration(`${args[TYPESCRIPT_TEMPLATE_REPOSITORY_PREFIX]}`)
         configuration.gitRepository = `${args[TYPESCRIPT_GIT_REPOSITORY_PREFIX]}`
 
         const libraryInitializer = await this.packageInitializerFactory.create(configuration);
         const projectRoot = path.join(cwd(), `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`);
 
-
-        console.log("Transfering source structure from template")
-        this.fileService.copyFiles(
-            currentTemplateRoot, 
-            projectRoot, {
-                recursive: true, 
-                formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
-            }
-        )
+        if(fs.existsSync(currentTemplateRoot))
+        {
+            console.log("Transfering source structure from template")
+            this.fileService.copyFiles(
+                currentTemplateRoot, 
+                projectRoot, {
+                    recursive: true, 
+                    formatFilenameCallback: (str) => str.replace(/(\.tpl)$/, "")
+                }
+            )
+        }
 
         try {
             await libraryInitializer.initialize(projectRoot, `${args[TYPESCRIPT_PACKAGE_NAME_PREFIX]}`, true);
