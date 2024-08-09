@@ -5,6 +5,7 @@ type NPMFlags = {
     "init-license"?: string,
     "init-module"?: string,
     "init-version"?: string,
+    main?:string,
     scope?: string,
     scripts?: {[key: string]: string},
     dependencies?: string[],

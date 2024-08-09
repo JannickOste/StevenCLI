@@ -141,16 +141,13 @@ export default class TSCService implements ITSCService
         
         await this.shellService.exec(`tsc --init ${flags}`, {cwd: root});
 
-        console.log("Generating source barrelfile")
         if(options?.rootDir)
         {
             const sourceRoot = path.join(root, options.rootDir);
 
-            const barrelFilepath = path.join(sourceRoot, "index.ts");
-            if(!fs.existsSync(barrelFilepath))
+            if(!fs.existsSync(sourceRoot))
             {
                 fs.mkdirSync(sourceRoot)
-                fs.writeFileSync(barrelFilepath, "")
             }
         }
 

@@ -21,6 +21,7 @@ import FileService from "./services/io/FileService";
 import NodeLibraryInitalizerFactory from "./factories/pkg/node/NodeLibraryInitalizerFactory";
 import INodePackageConfigurationBuilder from "../domain/models/pkg/node/INodePackageConfigurationBuilder";
 import ANodePackageConfigurationBuilder from "./services/pkg/node/ANodePackageConfigurationBuilder";
+import TailwindCSSDependencyInitializer from "./services/pkg/node/initializers/dependencies/tailwindcss/TailwindCSSDependencyInitializer";
 
 @injectable()
 export default class AppStartup implements IStartup 
@@ -44,6 +45,7 @@ export default class AppStartup implements IStartup
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(HuskyDependencyInitializer)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(ESLintDependencyInitializer)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(SemanticReleaseDependencyInitializer)
+        this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(TailwindCSSDependencyInitializer)
     }
 
     async configureServices(): Promise<void> {

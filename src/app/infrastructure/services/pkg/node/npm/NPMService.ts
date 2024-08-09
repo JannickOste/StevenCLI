@@ -36,6 +36,18 @@ export default class NPMService
         return flags.join(" ")
     }
 
+    private addNoFlags(options: NPMFlags, packageJsonPath: string)
+    {
+        let packageJson = (JSON.parse(readFileSync(packageJsonPath).toString("utf8")) ?? {}) as Record<string, any>
+
+        packageJson = {
+            ... (options.scripts ? {scripts: options?.scripts} : {}),
+            ... (options.main ?    {main: options?.main}       : {}),
+        }
+
+        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 4))
+    }
+
     async initialize(
         root: string,
         options?: NPMFlags
@@ -47,16 +59,7 @@ export default class NPMService
             {cwd: root}
         )
 
-        if(options?.scripts)
-        {
-            console.log("Injecting scripts into package.json")
-            const packagePath = path.join(root, "package.json");
-            const currentModule: unknown = JSON.parse(readFileSync(packagePath).toString("utf8"))
-            if(currentModule && typeof currentModule === "object")
-            {
-                writeFileSync(packagePath, JSON.stringify({... currentModule, scripts: options?.scripts}, null, 4))
-            }  
-        }
+        this.addNoFlags(options ?? {}, path.join(root, "package.json"))
 
         if(options?.dependencies)
         {

@@ -73,18 +73,19 @@ export default class NodeLibraryInitalizer
             console.log(`Creating package ${projectName}...`);        
             await this.initializeConfiguration(projectRoot)
 
-            console.log("Initializing git...");
-            console.log(await this.gitService.initializeRepo(projectRoot))
-
             console.log("Initializing dependencies")
             await this.initializeDependencies(projectRoot)
-            
-            console.log(`Adding all structure files to git and adding default "Initial commit" message.`)
-            console.log(await this.gitService.addFile(projectRoot, "."))
-            console.log(await this.gitService.commitMessage(projectRoot, "chore: Initial commit"))
 
             if (this.configuration.gitRepository && this.configuration.gitRepository.length) 
             {
+                console.log("Initializing git...");
+                console.log(await this.gitService.initializeRepo(projectRoot))
+                
+                console.log(`Adding all structure files to git and adding default "Initial commit" message.`)
+                console.log(await this.gitService.addFile(projectRoot, "."))
+                console.log(await this.gitService.commitMessage(projectRoot, "chore: Initial commit"))
+
+                
                 console.log("Adding repository URL as origin")
                 console.log(await this.gitService.addRemote(projectRoot, "origin", this.configuration.gitRepository))
 
