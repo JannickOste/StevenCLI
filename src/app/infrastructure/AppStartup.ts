@@ -22,6 +22,7 @@ import NodeLibraryInitalizerFactory from "./factories/pkg/node/NodeLibraryInital
 import INodePackageConfigurationBuilder from "../domain/models/pkg/node/INodePackageConfigurationBuilder";
 import ANodePackageConfigurationBuilder from "./services/pkg/node/ANodePackageConfigurationBuilder";
 import TailwindCSSDependencyInitializer from "./services/pkg/node/initializers/dependencies/tailwindcss/TailwindCSSDependencyInitializer";
+import PostCSSDependencyInitializer from "./services/pkg/node/initializers/dependencies/postcss/PostCSSDependencyInitalizer";
 
 @injectable()
 export default class AppStartup implements IStartup 
@@ -46,6 +47,7 @@ export default class AppStartup implements IStartup
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(ESLintDependencyInitializer)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(SemanticReleaseDependencyInitializer)
         this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(TailwindCSSDependencyInitializer)
+        this.container.bind<ANodeDependencyIntializer>(APP_TYPES.Services.Pkg.Node.IDependencyInitializers).to(PostCSSDependencyInitializer)
     }
 
     async configureServices(): Promise<void> {
