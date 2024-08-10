@@ -35,6 +35,7 @@ export default class PostCSSDependencyInitializer extends ANodeDependencyIntiali
                     supportedDependencies
                         .filter(dependency => configuration.hasDependency(dependency) || configuration.hasDevDependency(dependency))
                         .map(dependency => `require('${dependency}')`)
+                        .join(",")
                 }
             ],
         };`
